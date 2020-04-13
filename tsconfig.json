@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "esnext",
+    "allowJs": true,
+    "removeComments": true,
+    "sourceMap": true,
+    "outDir": "./public/",
+    "types": ["node"],
+    "baseUrl": "."
+  },
+  "exclude": ["node_modules", "public"]
+}
