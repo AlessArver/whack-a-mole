@@ -1,22 +1,20 @@
-export const scenesSettings = (
-  app,
-  startSceneContainer,
-  gameSceneContainer,
-  endSceneContainer
-) => {
-  startSceneContainer.visible = true;
-  app.stage.addChild(startSceneContainer);
+import { gameSceneBackgroundSound } from "./../sounds";
+export const scenesSettings = (app) => {
+  window.startSceneContainer.visible = true;
+  app.stage.addChild(window.startSceneContainer);
 
   const endOfTheGame = (): void => {
     setInterval(() => {
       if (window.countTime === 0) {
-        gameSceneContainer.visible = false;
-        app.stage.removeChild(gameSceneContainer);
+        window.gameSceneContainer.visible = false;
+        app.stage.removeChild(window.gameSceneContainer);
 
-        endSceneContainer.visible = true;
-        app.stage.addChild(endSceneContainer);
+        window.endSceneContainer.visible = true;
+        app.stage.addChild(window.endSceneContainer);
 
         window.stopGame = true;
+
+        gameSceneBackgroundSound.stop();
       }
     }, 1000);
   };

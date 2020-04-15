@@ -20,6 +20,12 @@ declare global {
     hitMoleCount: number;
     stopGame: boolean;
     PIXI: any;
+    startSceneContainer: any;
+    gameSceneContainer: any;
+    endSceneContainer: any;
+    TWEEN: any;
+    loader: any;
+    renderer: any
   }
 }
 window.countTime = 120;
@@ -29,8 +35,12 @@ window.hitMole = new PIXI.Text(`Hit: ${window.hitMoleCount}`);
 window.stopGame = true;
 window.PIXI = PIXI;
 window.score = new window.PIXI.Text(`Score: ${window.scoreCount}`);
-
-let loader = new PIXI.Loader();
+window.startSceneContainer = new window.PIXI.Container();
+window.gameSceneContainer = new window.PIXI.Container();
+window.endSceneContainer = new window.PIXI.Container();
+window.TWEEN = TWEEN;
+window.loader = new PIXI.Loader();
+window.renderer = new PIXI.Renderer()
 
 let animate = () => {
   requestAnimationFrame(animate);
@@ -40,12 +50,13 @@ let animate = () => {
 animate();
 
 const setup = () => {
-  Scenes(app, loader, TWEEN);
+  Scenes(app, TWEEN);
 };
 
-loader
+window.loader
   .add("../assets/imgs/grass.png")
   .add("../assets/imgs/moles.png")
+  .add("../assets/imgs/moles_dead.png")
   .load(setup);
 
 const play = (delta) => {};

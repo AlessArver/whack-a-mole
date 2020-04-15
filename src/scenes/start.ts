@@ -1,4 +1,5 @@
-export const startScene = (app, startSceneContainer, gameSceneContainer) => {
+import { gameSceneBackgroundSound } from "./../sounds";
+export const startScene = (app) => {
   const lineWidth: number = 4;
   const lineColor: number = 0x00000;
   const beginFill: number = 0xffffff;
@@ -22,13 +23,15 @@ export const startScene = (app, startSceneContainer, gameSceneContainer) => {
     style.fill = buttonTextColor;
   }
   function startMousedown(): void {
-    startSceneContainer.visible = false;
-    app.stage.removeChild(startSceneContainer);
+    window.startSceneContainer.visible = false;
+    app.stage.removeChild(window.startSceneContainer);
 
-    gameSceneContainer.visible = true;
-    app.stage.addChild(gameSceneContainer);
+    window.gameSceneContainer.visible = true;
+    app.stage.addChild(window.gameSceneContainer);
 
     window.stopGame = false;
+
+    gameSceneBackgroundSound.play();
   }
 
   let showButton = (): any => {
@@ -45,8 +48,10 @@ export const startScene = (app, startSceneContainer, gameSceneContainer) => {
     startButton.beginFill(beginFill);
     startButton.drawRect(0, 0, 200, 64);
     startButton.endFill();
-    startButton.x = (app.view.width - startButton.width) / 2;
-    startButton.y = (app.view.height - startButton.height) / 2;
+    setInterval(() => {
+      startButton.x = (app.view.width - startButton.width) / 2;
+      startButton.y = (app.view.height - startButton.height) / 2;
+    }, 1000);
 
     startButton.interactive = true;
 
@@ -55,7 +60,7 @@ export const startScene = (app, startSceneContainer, gameSceneContainer) => {
     startButton.on("mousedown", startMousedown);
 
     startButton.addChild(buttonText);
-    startSceneContainer.addChild(startButton);
+    window.startSceneContainer.addChild(startButton);
 
     const animate = () => {
       requestAnimationFrame(animate);

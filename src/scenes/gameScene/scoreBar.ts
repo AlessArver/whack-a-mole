@@ -1,17 +1,36 @@
-export const scoreBar = (gameSceneContainer, gameSceneBackgroundSound) => {
+import { gameSceneBackgroundSound } from "./../../sounds";
+import { moleTimerController } from "../../controllers/gameController/moleController";
+export const scoreBar = () => {
   let scoreBar = new window.PIXI.Container();
   scoreBar.position.set(0, 0);
-  gameSceneContainer.addChild(scoreBar);
+  window.gameSceneContainer.addChild(scoreBar);
 
-  // let score = new window.PIXI.Text(`Score: ${window.scoreCount}`);
   window.score.position.set(0, 0);
   scoreBar.addChild(window.score);
+
+  const getRandomInt = (min, max) => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
 
   const timerScoreBar = () => {
     let timer = new window.PIXI.Text(`Timer: ${window.countTime}s`);
     setInterval(() => {
       if (window.countTime > 0 && window.stopGame === false) {
         timer.text = `Timer: ${window.countTime--}s`;
+        let randomIntSmall = getRandomInt(0, 3);
+        let randomIntAvegage = getRandomInt(0, 1);
+        let probably = getRandomInt(0, 4);
+
+        // console.log(`Small: ${randomIntSmall}, average: ${randomIntAvegage}`);
+        // moleController(app, loader, TWEEN, gameSceneContainer, moles);
+        moleTimerController(
+          window.countTime,
+          getRandomInt(0, 3),
+          getRandomInt(0, 1),
+          getRandomInt(0, 4)
+        );
       }
     }, 1000);
 
@@ -28,7 +47,14 @@ export const scoreBar = (gameSceneContainer, gameSceneBackgroundSound) => {
 
     let stopButtonMousedown = (e) => {
       window.stopGame = !window.stopGame;
-      console.log(window.stopGame);
+      switch (window.stopGame) {
+        case false:
+          gameSceneBackgroundSound.play();
+          break;
+        case true:
+          gameSceneBackgroundSound.stop();
+          break;
+      }
     };
 
     stopButton.on("mousedown", stopButtonMousedown);
