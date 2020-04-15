@@ -3,10 +3,10 @@ import { gameScene } from "./gameScene/gameScene";
 import { startScene } from "./start";
 import { endScene } from "./endScene";
 
-export const Scenes = (app, loader, PIXI) => {
-  let startSceneContainer = new PIXI.Container();
-  let gameSceneContainer = new PIXI.Container();
-  let endSceneContainer = new PIXI.Container();
+export const Scenes = (app, loader, TWEEN) => {
+  let startSceneContainer = new window.PIXI.Container();
+  let gameSceneContainer = new window.PIXI.Container();
+  let endSceneContainer = new window.PIXI.Container();
 
   scenesSettings(
     app,
@@ -14,8 +14,9 @@ export const Scenes = (app, loader, PIXI) => {
     gameSceneContainer,
     endSceneContainer
   );
+  console.log(app.view.width)
 
-  startScene(app, PIXI, startSceneContainer, gameSceneContainer);
-  gameScene(app, loader, PIXI, gameSceneContainer);
-  endScene(app, PIXI, endSceneContainer);
+  startScene(app, startSceneContainer, gameSceneContainer);
+  gameScene(app, loader, TWEEN, gameSceneContainer);
+  endScene(app, endSceneContainer);
 };

@@ -1,9 +1,9 @@
-export const endScene = (app, PIXI, endSceneContainer) => {
-  let text = new PIXI.Text("The End!");
+export const endScene = (app, endSceneContainer) => {
+  let text = new window.PIXI.Text("The End!");
   text.position.set(0, 0);
   endSceneContainer.addChild(text);
 
-  let score = new PIXI.Text(`Score: ${window.scoreCount}`);
+  let score = new window.PIXI.Text(`Score: ${window.scoreCount}`);
   score.position.set(0, 100);
   endSceneContainer.addChild(score);
 

@@ -1,4 +1,5 @@
 import * as PIXI from "pixi.js";
+import TWEEN from "tween";
 
 import { Scenes } from "./scenes/scenes";
 
@@ -14,9 +15,11 @@ declare global {
   interface Window {
     countTime: number;
     hitMole: any;
+    score: any;
     scoreCount: number;
     hitMoleCount: number;
     stopGame: boolean;
+    PIXI: any;
   }
 }
 window.countTime = 120;
@@ -24,13 +27,25 @@ window.scoreCount = 0;
 window.hitMoleCount = 0;
 window.hitMole = new PIXI.Text(`Hit: ${window.hitMoleCount}`);
 window.stopGame = true;
+window.PIXI = PIXI;
+window.score = new window.PIXI.Text(`Score: ${window.scoreCount}`);
 
 let loader = new PIXI.Loader();
 
-const setup = () => {
-  Scenes(app, loader, PIXI);
+let animate = () => {
+  requestAnimationFrame(animate);
+  TWEEN.update();
 };
 
-loader.add("./assets/imgs/moles.png").load(setup);
+animate();
+
+const setup = () => {
+  Scenes(app, loader, TWEEN);
+};
+
+loader
+  .add("../assets/imgs/grass.png")
+  .add("../assets/imgs/moles.png")
+  .load(setup);
 
 const play = (delta) => {};

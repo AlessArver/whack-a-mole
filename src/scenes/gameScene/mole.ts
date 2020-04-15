@@ -1,56 +1,116 @@
-export const mole = async (app, loader, PIXI, gameSceneContainer) => {
+export const mole = async (app, loader, TWEEN, gameSceneContainer, moles) => {
   const positionsX: Array<number> = [100, 250, 400, 550, 700];
-  let moles: any = new PIXI.Container();
+
+  let simpleOrStrongMole = ["simpleMole", "strongMole"];
 
   function moleOnClick(e) {
-    // this.width = 100;
-
-    const play = (delta) => {
-      e.target.vy = 1;
-      e.target.y += e.target.vy;
-    };
-
-    let gameLoop = (delta) => play(delta);
-    app.ticker.add((delta) => gameLoop(delta));
-
-    window.scoreCount += 5;
-    window.hitMoleCount += 1;
+    let coords = { y: e.target.y };
+    let tween = new TWEEN.Tween(coords)
+      .to({ y: 300 }, 200)
+      .onUpdate(function () {
+        e.target.y = coords.y;
+        console.log("ANIMATION");
+      })
+      .onComplete(() => {
+        window.hitMoleCount += 1;
+        moles.removeChild(e.target);
+      });
+    tween.start();
   }
-    
-  let texture = loader.resources["./assets/imgs/moles.png"].texture;
-  // let rectangle = new PIXI.Rectangle(0, 0, 64, 64);
-  // texture.frame = rectangle;
-  console.log(texture);
+
+  function simpleMoleOnClick(e) {
+    window.scoreCount += 5;
+    window.score.text = `Score: ${window.scoreCount}`;
+    console.log("LOLOLOL", window.scoreCount);
+
+    moleOnClick(e);
+  }
+
+  function strongMoleOnClick(e) {
+    window.scoreCount += 15;
+    window.score.text = `Score: ${window.scoreCount}`;
+    console.log("KEKEKEK", window.scoreCount);
+
+    moleOnClick(e);
+  }
+
+  let animationUp = (mole) => {
+    let coords = { y: mole.y };
+    let tween = new TWEEN.Tween(coords)
+      .to({ y: 250 }, 1000)
+      .onUpdate(function () {
+        mole.y = coords.y;
+        console.log("mole animation up");
+      });
+    tween.start();
+  };
 
   const createMole = (resolve) => {
-    let mole = new PIXI.Graphics();
-    mole.beginFill(0x000000);
-    mole.drawRect(0, 100, 50, 100);
-    mole.endFill();
+    let selectMole =
+      simpleOrStrongMole[Math.floor(Math.random() * simpleOrStrongMole.length)];
 
-    // let e = PIXI.loader.resources("moles.png").texture;
-    // let rectangle = new PIXI.Rectangle(60, 0, 70, 150);
-    // e.frame = rectangle;
-    // let mole = new PIXI.Sprite(e);
+    switch (selectMole) {
+      case "simpleMole": {
+        let texture = loader.resources["../assets/imgs/moles.png"].texture;
+        let rectangle = new window.PIXI.Rectangle(0, 0, 60, 150);
+        texture.frame = rectangle;
+        let mole = new window.PIXI.Sprite(texture);
 
-    mole.x = positionsX[Math.floor(Math.random() * positionsX.length)];
-    mole.y = 200;
+        mole.x = positionsX[Math.floor(Math.random() * positionsX.length)];
+        mole.y = 390;
 
-    mole.interactive = true;
+        mole.interactive = true;
 
-    mole.on("mousedown", moleOnClick);
+        animationUp(mole);
 
-    moles.addChild(mole);
-    gameSceneContainer.addChild(moles);
-    resolve(moles);
+        mole.on("mousedown", simpleMoleOnClick);
+
+        moles.addChild(mole);
+        gameSceneContainer.addChild(moles);
+        resolve(moles);
+
+        break;
+      }
+      case "strongMole": {
+        let texture = loader.resources["../assets/imgs/moles.png"].texture;
+        let rectangle = new window.PIXI.Rectangle(60, 0, 70, 150);
+        texture.frame = rectangle;
+        let mole = new window.PIXI.Sprite(texture);
+
+        mole.x = positionsX[Math.floor(Math.random() * positionsX.length)];
+        mole.y = 390;
+
+        mole.interactive = true;
+
+        animationUp(mole);
+
+        mole.on("mousedown", strongMoleOnClick);
+
+        moles.addChild(mole);
+        gameSceneContainer.addChild(moles);
+        resolve(moles);
+
+        break;
+      }
+    }
   };
 
   const removeMole = (moles) => {
     if (moles.children[0]) {
       setTimeout(() => {
         let firstMole = moles.children[0];
-        firstMole.visible = false;
-        moles.removeChild(firstMole);
+        if (firstMole) {
+          let coords = { y: firstMole.y };
+          let tween = new TWEEN.Tween(coords)
+            .to({ y: 390 }, 1000)
+            .onUpdate(() => {
+              firstMole.y = coords.y;
+            })
+            .onComplete(() => {
+              moles.removeChild(firstMole);
+            });
+          tween.start();
+        }
       }, 3000);
     }
   };
@@ -62,18 +122,24 @@ export const mole = async (app, loader, PIXI, gameSceneContainer) => {
           createMole(resolve);
         }).then((moles) => removeMole(moles));
       }
-    }, 3000);
+    }, 5000);
   };
 
   if (window.countTime >= 90) {
     createAndDeleteMole();
-  } else if (window.countTime <= 90 && window.countTime >= 75) {
-    for (let i = 1; i <= 3; i++) {
-      createAndDeleteMole();
-    }
-  } else if (window.countTime <= 75 && window.countTime >= 0) {
-    for (let i = 1; i <= 6; i++) {
-      createAndDeleteMole();
-    }
   }
+  setTimeout(() => {
+    if (window.countTime <= 90 && window.countTime >= 75) {
+      for (let i = 1; i <= 3; i++) {
+        createAndDeleteMole();
+      }
+    }
+  }, 30000);
+  setTimeout(() => {
+    if (window.countTime <= 75 && window.countTime >= 0) {
+      for (let i = 1; i <= 6; i++) {
+        createAndDeleteMole();
+      }
+    }
+  }, 45000);
 };

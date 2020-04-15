@@ -9,7 +9,7 @@ export const scenesSettings = (
 
   const endOfTheGame = (): void => {
     setInterval(() => {
-      if (window.countTime === 100) {
+      if (window.countTime === 0) {
         gameSceneContainer.visible = false;
         app.stage.removeChild(gameSceneContainer);
 
