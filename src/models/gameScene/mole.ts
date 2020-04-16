@@ -1,4 +1,4 @@
-export interface MoleInterface {
+interface MoleInterface {
   frameX: number;
   frameY: number;
   frameWidth: number;
@@ -6,7 +6,7 @@ export interface MoleInterface {
   typeMoleOnClick: any;
 }
 
-export class Mole {
+export class Mole extends GameScene {
   public frameX: number;
   public frameY: number;
   public frameWidth: number;
@@ -28,6 +28,7 @@ export class Mole {
       typeMoleOnClick: null,
     }
   ) {
+    super();
     this.frameX = frameX;
     this.frameY = frameY;
     this.frameWidth = frameWidth;

@@ -1,6 +1,5 @@
 import { hole } from "./hole";
-// import { mole } from "./mole";
-// import gameSceneView from "../../views/gameScene"
+import { mole } from "./mole";
 import { scoreBar } from "./scoreBar";
 
 export const gameScene = (app) => {
@@ -23,6 +22,5 @@ export const gameScene = (app) => {
 
   scoreBar();
   hole(holee);
-  // gameSceneView()
-  // mole(app, moles);
+  mole(app, moles);
 };
