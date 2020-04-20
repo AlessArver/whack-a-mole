@@ -1,26 +1,35 @@
+import { showMoles } from "./mole";
 import { hole } from "./hole";
-import { mole } from "./mole";
 import { scoreBar } from "./scoreBar";
 
-export const gameScene = (app) => {
-  let holee = new window.PIXI.Container(),
+export const gameScene = () => {
+  let holes = new window.PIXI.Container(),
     moles = new window.PIXI.Container();
 
   let whiteBackground = new window.PIXI.Graphics();
   whiteBackground.beginFill(0xffffff);
-  whiteBackground.drawRect(0, 410, app.view.width, 400);
+  whiteBackground.drawRect(0, 0, window.app.view.width, 100);
   whiteBackground.endFill();
+  setInterval(
+    () => (whiteBackground.y = (window.app.view.height - whiteBackground.height) + 50),
+    1000
+  );
   window.gameSceneContainer.addChild(whiteBackground);
 
   window.gameSceneContainer.sortableChildren = true;
 
-  console.log(window.gameSceneContainer);
-
-  holee.zIndex = 2;
+  holes.zIndex = 2;
   whiteBackground.zIndex = 1;
   moles.zIndex = 0;
 
+  holes.width = 388;
+  holes.height = 17;
+  setInterval(
+    () => (holes.x = (window.app.view.width - holes.width) / 2),
+    1000
+  );
+
   scoreBar();
-  hole(holee);
-  mole(app, moles);
+  hole(holes);
+  // showMoles();
 };

@@ -3,10 +3,10 @@ import { gameScene } from "./gameScene/gameScene";
 import { startScene } from "./start";
 import { endScene } from "./endScene";
 
-export const Scenes = (app) => {
-  scenesSettings(app);
+export const Scenes = () => {
+  scenesSettings();
 
-  startScene(app);
-  gameScene(app);
-  endScene(app);
+  startScene();
+  gameScene();
+  endScene();
 };

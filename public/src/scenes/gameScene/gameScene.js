@@ -1,13 +1,17 @@
-import { gameSceneBackgroundSound } from "./../../sounds";
 import { hole } from "./hole";
-import { mole } from "./mole";
 import { scoreBar } from "./scoreBar";
-export const gameScene = (app, loader, PIXI, TWEEN, gameSceneContainer) => {
-    gameSceneBackgroundSound.play();
-    let holee = new PIXI.Container(), moles = new PIXI.Container();
-    console.log(app);
-    scoreBar(PIXI, gameSceneContainer);
-    hole(PIXI, loader, gameSceneContainer, holee);
-    mole(app, loader, PIXI, TWEEN, gameSceneContainer, moles);
+export const gameScene = () => {
+    let holee = new window.PIXI.Container(), moles = new window.PIXI.Container();
+    let whiteBackground = new window.PIXI.Graphics();
+    whiteBackground.beginFill(0xffffff);
+    whiteBackground.drawRect(0, 410, window.app.view.width, 400);
+    whiteBackground.endFill();
+    window.gameSceneContainer.addChild(whiteBackground);
+    window.gameSceneContainer.sortableChildren = true;
+    holee.zIndex = 2;
+    whiteBackground.zIndex = 1;
+    moles.zIndex = 0;
+    scoreBar();
+    hole(holee);
 };
 //# sourceMappingURL=gameScene.js.map

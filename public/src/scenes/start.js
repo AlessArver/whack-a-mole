@@ -1,11 +1,12 @@
-export const startScene = (app, PIXI, startSceneContainer, gameSceneContainer) => {
+import { gameSceneBackgroundSound } from "./../sounds";
+export const startScene = () => {
     const lineWidth = 4;
     const lineColor = 0x00000;
     const beginFill = 0xffffff;
     const buttoBackgroundnMouseOver = 0x000000;
     const buttonTextColor = 0x000000;
     const buttonTextMouseOver = 0xffffff;
-    let style = new PIXI.TextStyle({
+    let style = new window.PIXI.TextStyle({
         fontFamily: "sans-serif",
         fontSize: 50,
         align: "center",
@@ -19,32 +20,36 @@ export const startScene = (app, PIXI, startSceneContainer, gameSceneContainer) =
         style.fill = buttonTextColor;
     }
     function startMousedown() {
-        startSceneContainer.visible = false;
-        app.stage.removeChild(startSceneContainer);
-        gameSceneContainer.visible = true;
-        app.stage.addChild(gameSceneContainer);
+        window.startSceneContainer.visible = false;
+        window.app.stage.removeChild(window.startSceneContainer);
+        window.gameSceneContainer.visible = true;
+        window.app.stage.addChild(window.gameSceneContainer);
         window.stopGame = false;
+        gameSceneBackgroundSound.play();
     }
-    let showButton = (message, x, y, mouseover, mouseout, mousedown) => {
-        const buttonText = new PIXI.Text(message, style);
+    let showButton = () => {
+        const buttonText = new window.PIXI.Text("Start", style);
         buttonText.position.set(45, 2);
-        let startButton = new PIXI.Graphics();
+        let startButton = new window.PIXI.Graphics();
         startButton.lineStyle(lineWidth, lineColor, 1);
         startButton.beginFill(beginFill);
         startButton.drawRect(0, 0, 200, 64);
         startButton.endFill();
-        startButton.position.set(x, y);
+        setInterval(() => {
+            startButton.x = (window.app.view.width - startButton.width) / 2;
+            startButton.y = (window.app.view.height - startButton.height) / 2;
+        }, 1000);
         startButton.interactive = true;
-        startButton.on("mouseover", mouseover);
-        startButton.on("mouseout", mouseout);
-        startButton.on("mousedown", mousedown);
+        startButton.on("mouseover", startMouseover);
+        startButton.on("mouseout", startMouseout);
+        startButton.on("mousedown", startMousedown);
         startButton.addChild(buttonText);
-        startSceneContainer.addChild(startButton);
+        window.startSceneContainer.addChild(startButton);
         const animate = () => {
             requestAnimationFrame(animate);
-            app.render(startButton);
+            window.app.render(startButton);
         };
     };
-    showButton("Start", 170, 170, startMouseover, startMouseout, startMousedown);
+    showButton();
 };
 //# sourceMappingURL=start.js.map

@@ -1,19 +1,15 @@
-export const hole = (PIXI, loader, gameSceneContainer, hole) => {
-    const beginFill = 0x000000;
-    const y = 400;
-    const width = 100;
-    const height = 30;
-    let createAndShowHole = (x) => {
-        let texture = loader.resources["../assets/imgs/grass.png"].texture;
-        let grass = new PIXI.Sprite(texture);
-        grass.position.set(x, y);
+export const hole = (hole) => {
+    let createHole = (x) => {
+        let texture = window.loader.resources["../assets/imgs/grass.png"].texture;
+        let grass = new window.PIXI.Sprite(texture);
+        grass.position.set(x, 400);
         hole.addChild(grass);
-        gameSceneContainer.addChild(hole);
+        window.gameSceneContainer.addChild(hole);
     };
-    createAndShowHole(100);
-    createAndShowHole(250);
-    createAndShowHole(400);
-    createAndShowHole(550);
-    createAndShowHole(700);
+    createHole(100);
+    createHole(250);
+    createHole(400);
+    createHole(550);
+    createHole(700);
 };
 //# sourceMappingURL=hole.js.map

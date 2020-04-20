@@ -1,108 +1,162 @@
-export const mole = async (app, loader, PIXI, TWEEN, gameSceneContainer, moles) => {
-    const positionsX = [100, 250, 400, 550, 700];
-    let simpleOrStrongMole = ["simpleMole", "strongMole"];
-    function moleOnClick(e) {
-        let coords = { y: e.target.y };
-        let tween = new TWEEN.Tween(coords)
-            .to({ y: 300 }, 3000)
-            .onUpdate(function () {
-            e.target.y = coords.y;
-            console.log("ANIMATION");
-        });
-        tween.start();
-        window.hitMoleCount += 1;
+import { animationUp, animationDown } from "./../../funcs/animations";
+const positionsX = [100, 250, 400, 550, 700];
+let simpleOrStrongMole = ["simpleMole", "strongMole"];
+function moleOnClick(e) {
+    animationDown(e.target, 400, 500);
+}
+function simpleMoleOnClick(e) {
+    let texture = window.loader.resources["../assets/imgs/moles_dead.png"].texture;
+    let rectangle = new window.PIXI.Rectangle(0, 0, 60, 150);
+    texture.frame = rectangle;
+    e.target.texture = texture;
+    window.scoreCount += 5;
+    moleOnClick(e);
+}
+function strongMoleOnClick(e) {
+    let texture = window.loader.resources["../assets/imgs/moles_dead.png"].texture;
+    let rectangle = new window.PIXI.Rectangle(60, 0, 70, 150);
+    texture.frame = rectangle;
+    e.target.texture = texture;
+    window.scoreCount += 15;
+    moleOnClick(e);
+}
+let removeFromArray = (holes) => {
+    if (holes.getChildAt(0).childern.length !== 0) {
+        holes.getChildAt(0).removeChild(holes.getChildAt(0).children.length - 1);
+        console.log(`remove from firstHole`);
     }
-    function simpleMoleOnClick(e) {
-        window.scoreCount += 5;
-        moleOnClick(e);
+    if (holes.getChildAt(1).childern.length !== 0) {
+        holes.getChildAt(1).removeChild(holes.getChildAt(1).children.length - 1);
+        console.log(`remove from secondHole`);
     }
-    function strongMoleOnClick(e) {
-        window.scoreCount += 15;
-        moleOnClick(e);
+    if (holes.getChildAt(2).childern.length !== 0) {
+        holes.getChildAt(2).removeChild(holes.getChildAt(2).children.length - 1);
+        console.log(`remove from thirdHole`);
     }
-    let animationUp = (mole) => {
-        let coords = { y: mole.y };
-        let tween = new TWEEN.Tween(coords)
-            .to({ y: 250 }, 1000)
-            .onUpdate(function () {
-            mole.y = coords.y;
-            console.log("mole animation up");
-        });
-        tween.start();
-    };
-    const createMole = (resolve) => {
-        let selectMole = simpleOrStrongMole[Math.floor(Math.random() * simpleOrStrongMole.length)];
-        switch (selectMole) {
-            case "simpleMole": {
-                let texture = loader.resources["../assets/imgs/moles.png"].texture;
-                let rectangle = new PIXI.Rectangle(0, 0, 60, 150);
-                texture.frame = rectangle;
-                let mole = new PIXI.Sprite(texture);
-                mole.x = positionsX[Math.floor(Math.random() * positionsX.length)];
-                mole.y = 390;
-                mole.interactive = true;
-                animationUp(mole);
-                mole.on("mousedown", simpleMoleOnClick);
-                moles.addChild(mole);
-                gameSceneContainer.addChild(moles);
-                resolve(moles);
-                break;
+    if (holes.getChildAt(3).children.length !== 0) {
+        holes.getChildAt(3).removeChild(holes.getChildAt(3).children.length - 1);
+        console.log(`remove from quaterHole`);
+    }
+    if (holes.getChildAt(4).childern.length !== 0) {
+        holes.getChildAt(4).removeChild(holes.getChildAt(4).children.length - 1);
+        console.log(`remove from fiftyHole`);
+    }
+};
+const createMole = (resolve) => {
+    let selectMole = simpleOrStrongMole[Math.floor(Math.random() * simpleOrStrongMole.length)];
+    let hole = positionsX[Math.floor(Math.random() * positionsX.length)];
+    let firstHole = new window.PIXI.Container();
+    let secondHole = new window.PIXI.Container();
+    let thirdHole = new window.PIXI.Container();
+    let quaterHole = new window.PIXI.Container();
+    let fiftyHole = new window.PIXI.Container();
+    let holes = new window.PIXI.Container();
+    holes.addChild(firstHole);
+    holes.addChild(secondHole);
+    holes.addChild(thirdHole);
+    holes.addChild(quaterHole);
+    holes.addChild(fiftyHole);
+    console.log(holes.getChildAt(0).children);
+    let addInHole = (data) => {
+        if (hole === 100) {
+            if (firstHole.children.length === 0) {
+                console.log("FIRST");
+                firstHole.addChild(data);
             }
-            case "strongMole": {
-                let texture = loader.resources["../assets/imgs/moles.png"].texture;
-                let rectangle = new PIXI.Rectangle(60, 0, 70, 150);
-                texture.frame = rectangle;
-                let mole = new PIXI.Sprite(texture);
-                mole.x = positionsX[Math.floor(Math.random() * positionsX.length)];
-                mole.y = 390;
-                mole.interactive = true;
-                animationUp(mole);
-                mole.on("mousedown", strongMoleOnClick);
-                moles.addChild(mole);
-                gameSceneContainer.addChild(moles);
-                resolve(moles);
-                break;
+        }
+        else if (hole === 250) {
+            if (secondHole.children.length === 0) {
+                console.log("SECOND");
+                secondHole.addChild(data);
+            }
+        }
+        else if (hole === 400) {
+            if (thirdHole.children.length === 0) {
+                console.log("THIRD");
+                thirdHole.addChild(data);
+            }
+        }
+        else if (hole === 550) {
+            if (quaterHole.children.length === 0) {
+                console.log("QUATER");
+                quaterHole.addChild(data);
+            }
+        }
+        else if (hole === 700) {
+            if (fiftyHole.children.length === 0) {
+                console.log("FFTY");
+                fiftyHole.addChild(data);
             }
         }
     };
-    const removeMole = (moles) => {
-        if (moles.children[0]) {
-            setTimeout(() => {
-                let firstMole = moles.children[0];
-                let coords = { y: firstMole.y };
-                let tween = new TWEEN.Tween(coords)
-                    .to({ y: 390 }, 1000)
-                    .onUpdate(() => {
-                    firstMole.y = coords.y;
-                })
-                    .onComplete(() => {
-                    moles.removeChild(firstMole);
-                });
-                tween.start();
-            }, 3000);
+    switch (selectMole) {
+        case "simpleMole": {
+            let texture = window.loader.resources["../assets/imgs/moles.png"].texture;
+            let rectangle = new window.PIXI.Rectangle(0, 0, 60, 150);
+            texture.frame = rectangle;
+            let mole = new window.PIXI.Sprite(texture);
+            mole.x = hole;
+            mole.y = 390;
+            mole.interactive = true;
+            animationUp(mole, 280, 500);
+            mole.on("mousedown", simpleMoleOnClick);
+            console.log(mole.x);
+            console.log(hole);
+            addInHole(mole);
+            resolve(holes);
+            break;
         }
-    };
-    const createAndDeleteMole = () => {
-        setInterval(() => {
-            if (window.stopGame === false) {
-                let p = new Promise((resolve, reject) => {
-                    createMole(resolve);
-                }).then((moles) => removeMole(moles));
-            }
-        }, 5000);
-    };
-    if (window.countTime >= 90) {
-        createAndDeleteMole();
+        case "strongMole": {
+            let texture = window.loader.resources["../assets/imgs/moles.png"].texture;
+            let rectangle = new window.PIXI.Rectangle(60, 0, 70, 150);
+            texture.frame = rectangle;
+            let mole = new window.PIXI.Sprite(texture);
+            mole.x = hole;
+            mole.y = 390;
+            mole.interactive = true;
+            animationUp(mole, 280, 500);
+            mole.on("mousedown", strongMoleOnClick);
+            console.log(mole.x);
+            console.log(hole);
+            addInHole(mole);
+            window.gameSceneContainer.addChild(holes);
+            resolve(holes);
+            break;
+        }
     }
-    else if (window.countTime <= 90 && window.countTime >= 75) {
-        for (let i = 1; i <= 3; i++) {
-            createAndDeleteMole();
+};
+const removeMole = (holes) => {
+    setTimeout(() => {
+        removeFromArray(holes);
+    }, 3000);
+};
+const createAndRemoveMole = () => {
+    setInterval(() => {
+        if (window.stopGame === false) {
+            let p = new Promise((resolve, reject) => {
+                createMole(resolve);
+            }).then((holes) => removeMole(holes));
         }
+    }, 5000);
+};
+export const showMoles = (currentTime, randomIntSmall, randomIntAvegage) => {
+    if (currentTime == 119) {
+        console.log(`FIRST IF. Current time: ${currentTime}. RandomInt: ${randomIntSmall}`),
+            createAndRemoveMole();
     }
-    else if (window.countTime <= 75 && window.countTime >= 0) {
-        for (let i = 1; i <= 6; i++) {
-            createAndDeleteMole();
-        }
+    else if (currentTime == 75) {
+        console.log(`SECOND IF. Current time: ${currentTime}. RandomInt: ${randomIntAvegage}`);
+        createAndRemoveMole();
+        createAndRemoveMole();
+        createAndRemoveMole();
+    }
+    else if (currentTime == 0) {
+        console.log(`THIRD IF. Current time: ${currentTime}. RandomInt: ${randomIntSmall}`);
+        createAndRemoveMole();
+        createAndRemoveMole();
+        createAndRemoveMole();
+        createAndRemoveMole();
+        createAndRemoveMole();
     }
 };
 //# sourceMappingURL=mole.js.map

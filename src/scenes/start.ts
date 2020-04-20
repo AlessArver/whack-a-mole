@@ -1,5 +1,5 @@
 import { gameSceneBackgroundSound } from "./../sounds";
-export const startScene = (app) => {
+export const startScene = () => {
   const lineWidth: number = 4;
   const lineColor: number = 0x00000;
   const beginFill: number = 0xffffff;
@@ -24,10 +24,10 @@ export const startScene = (app) => {
   }
   function startMousedown(): void {
     window.startSceneContainer.visible = false;
-    app.stage.removeChild(window.startSceneContainer);
+    window.app.stage.removeChild(window.startSceneContainer);
 
     window.gameSceneContainer.visible = true;
-    app.stage.addChild(window.gameSceneContainer);
+    window.app.stage.addChild(window.gameSceneContainer);
 
     window.stopGame = false;
 
@@ -35,10 +35,6 @@ export const startScene = (app) => {
   }
 
   let showButton = (): any => {
-    // const parent = app.view.parentNode;
-
-    // app.renderer.resize(parent.width, parent.height);
-
     const buttonText = new window.PIXI.Text("Start", style);
 
     buttonText.position.set(45, 2);
@@ -49,8 +45,10 @@ export const startScene = (app) => {
     startButton.drawRect(0, 0, 200, 64);
     startButton.endFill();
     setInterval(() => {
-      startButton.x = (app.view.width - startButton.width) / 2;
-      startButton.y = (app.view.height - startButton.height) / 2;
+      startButton.position.set(
+        (window.app.view.width - startButton.width) / 2,
+        (window.app.view.height - startButton.height) / 2
+      );
     }, 1000);
 
     startButton.interactive = true;
@@ -64,12 +62,8 @@ export const startScene = (app) => {
 
     const animate = () => {
       requestAnimationFrame(animate);
-      app.render(startButton);
+      window.app.render(startButton);
     };
   };
-
-  // window.addEventListener("resize", showButton);
-
-  // window.onload = () => showButton();
   showButton();
 };

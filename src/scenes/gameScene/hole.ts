@@ -1,23 +1,20 @@
-export const hole = (hole) => {
-  const y: number = 400;
-
-  let createAndShowHole = (x: number) => {
+export const hole = (holes) => {
+  let createHole = (x: number) => {
     let texture = window.loader.resources["../assets/imgs/grass.png"].texture;
     let grass = new window.PIXI.Sprite(texture);
-    grass.position.set(x, y);
-    // let hole = new PIXI.Graphics();
-    // hole.beginFill(beginFill);
-    // hole.drawRect(x, y, width, height);
-    // hole.endFill();
+    setInterval(
+      () => grass.position.set(x, (window.app.view.height - grass.height) - 50),
+      1000
+    );
 
-    hole.addChild(grass);
+    holes.addChild(grass);
 
-    window.gameSceneContainer.addChild(hole);
+    window.gameSceneContainer.addChild(holes);
   };
 
-  createAndShowHole(100);
-  createAndShowHole(250);
-  createAndShowHole(400);
-  createAndShowHole(550);
-  createAndShowHole(700);
+  createHole(0);
+  createHole(97);
+  createHole(194);
+  createHole(291);
+  createHole(388);
 };
