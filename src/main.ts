@@ -13,42 +13,55 @@ import { Scenes } from "./scenes/scenes";
 
 declare global {
   interface Window {
-    countTime: number;
-    hitMole: any;
-    misses: number
-    score: any;
-    scoreCount: number;
-    hitMoleCount: number;
-    stopGame: boolean;
+    TWEEN: any;
+
     PIXI: any;
-    mainContainer: any;
+    app: any;
+
+    loader: any;
+    renderer: any;
+
     startSceneContainer: any;
     gameSceneContainer: any;
     endSceneContainer: any;
-    TWEEN: any;
-    loader: any;
-    renderer: any;
-    app: any;
+
+    countTime: number;
+    scoreCount: number;
+    hitMoleCount: number;
+    missesCount: number
+
+    score: any;
+    hitMole: any;
+
+    stopGame: boolean;
   }
 }
-window.countTime = 120;
-window.misses = 0
-window.scoreCount = 0;
-window.hitMoleCount = 0;
-window.hitMole = new PIXI.Text(`Hit: ${window.hitMoleCount}`);
-window.stopGame = true;
-window.PIXI = PIXI;
-window.score = new window.PIXI.Text(`Score: ${window.scoreCount}`);
-window.mainContainer = new window.PIXI.Container();
-window.startSceneContainer = new window.PIXI.Container();
-window.gameSceneContainer = new window.PIXI.Container();
-window.endSceneContainer = new window.PIXI.Container();
+// Global variables
 window.TWEEN = TWEEN;
+
+window.PIXI = PIXI;
+
 window.loader = new PIXI.Loader();
 window.renderer = new PIXI.Renderer();
 
-const logicalWidth = 320;
-const logicalHeight = 240;
+window.startSceneContainer = new window.PIXI.Container();
+window.gameSceneContainer = new window.PIXI.Container();
+window.endSceneContainer = new window.PIXI.Container();
+
+window.countTime = 120;
+window.scoreCount = 0;
+window.hitMoleCount = 0;
+window.missesCount = 0
+
+window.score = new window.PIXI.Text(`Score: ${window.scoreCount}`);
+window.hitMole = new PIXI.Text(`Hit: ${window.hitMoleCount}`);
+
+window.stopGame = true;
+// Global variables End
+
+// Responsive app
+const logicalWidth: number = 320;
+const logicalHeight: number = 240;
 
 const app = new PIXI.Application({
   autoResize: true,
@@ -61,8 +74,8 @@ function resize() {
     window.innerWidth / logicalWidth,
     window.innerHeight / logicalHeight
   );
-  const newWidth = Math.ceil(logicalWidth * scaleFactor);
-  const newHeight = Math.ceil(logicalHeight * scaleFactor);
+  const newWidth: number = Math.ceil(logicalWidth * scaleFactor);
+  const newHeight: number = Math.ceil(logicalHeight * scaleFactor);
 
   app.view.style.width = `${newWidth}px`;
   app.view.style.height = `${newHeight}px`;
@@ -87,7 +100,6 @@ let animate = () => {
   requestAnimationFrame(animate);
   TWEEN.update();
 };
-
 animate();
 
 const setup = () => {

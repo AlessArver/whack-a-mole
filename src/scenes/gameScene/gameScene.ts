@@ -1,4 +1,4 @@
-import { showMoles } from "./mole";
+import { showMoles } from "./mole/mole";
 import { hole } from "./hole";
 import { scoreBar } from "./scoreBar";
 

@@ -1,5 +1,5 @@
-import { showMoles } from "./mole";
-import { gameSceneBackgroundSound } from "./../../sounds";
+import { showMoles } from "./mole/mole";
+import { gameSceneBackgroundSound } from "../../sounds";
 export const scoreBar = () => {
   let scoreBar = new window.PIXI.Container();
   setInterval(
