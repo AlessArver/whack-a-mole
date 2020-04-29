@@ -1,9 +1,9 @@
-export let animationUp = (data) => {
+export let animationUp = (mole) => {
     let coords = { y: 250};
     let tween = new window.TWEEN.Tween(coords)
         .to({ y: coords.y }, 500)
         .onUpdate(function () {
-            data.y = coords.y;
+            mole.y = coords.y;
         });
     tween.start();
 };
@@ -33,12 +33,16 @@ let moleDown = (hole, moles, mole, holeName) => {
     tween.start();
 };
 
+let ifElseChoiceHole = (array, arrayName, moles, mole, moleXFirst, moleXSecond) => {
+    if (mole.x === moleXFirst && array.length || mole.x === moleXSecond && array.length) moleDown(array, arrayName, moles, mole)
+}
+
 export let animationDown = (firstHole, secondHole, thirdHole, quarterHole, fiftyHole, moles) => {
     moles.children.forEach(mole => {
-        if (firstHole.length) moleDown(firstHole, moles, mole, "First")
-        if (secondHole.length) moleDown(secondHole, moles, mole, "Second");
-        if (thirdHole.length) moleDown(thirdHole, moles, mole, "Third");
-        if (quarterHole.length) moleDown(quarterHole, moles, mole, "Quarter");
-        if (fiftyHole.length) moleDown(fiftyHole, moles, mole, "Fifty");
+        ifElseChoiceHole(firstHole, 'FIRST', moles, mole, 180, 190)
+        ifElseChoiceHole(secondHole, 'SECOND', moles, mole, 280, 290)
+        ifElseChoiceHole(thirdHole, 'THIRD', moles, mole, 380, 390)
+        ifElseChoiceHole(quarterHole, 'QUARTER', moles, mole, 480, 490)
+        ifElseChoiceHole(fiftyHole, 'FIFTY', moles, mole, 580, 590)
     })
 };
