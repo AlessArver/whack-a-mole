@@ -1,15 +1,6 @@
 import * as PIXI from "pixi.js";
 import TWEEN from "tween";
-
 import { Scenes } from "./scenes/scenes";
-
-// const app = new PIXI.Application({
-//   width: window.innerWidth,
-//   height: window.innerHeight,
-//   resizeTo: window,
-//   transparent: true,
-// });
-// document.body.appendChild(app.view);
 
 declare global {
   interface Window {
@@ -28,7 +19,7 @@ declare global {
     countTime: number;
     scoreCount: number;
     hitMoleCount: number;
-    missesCount: number
+    missesCount: number;
 
     score: any;
     hitMole: any;
@@ -36,7 +27,6 @@ declare global {
     stopGame: boolean;
   }
 }
-// Global variables
 window.TWEEN = TWEEN;
 
 window.PIXI = PIXI;
@@ -51,13 +41,12 @@ window.endSceneContainer = new window.PIXI.Container();
 window.countTime = 120;
 window.scoreCount = 0;
 window.hitMoleCount = 0;
-window.missesCount = 0
+window.missesCount = 0;
 
 window.score = new window.PIXI.Text(`Score: ${window.scoreCount}`);
 window.hitMole = new PIXI.Text(`Hit: ${window.hitMoleCount}`);
 
 window.stopGame = true;
-// Global variables End
 
 // Responsive app
 const logicalWidth: number = 320;
@@ -88,12 +77,9 @@ function resize() {
   app.view.style.border = "5px solid black";
 
   app.resize(newWidth, newHeight);
-  // window.startSceneContainer.scale.set(scaleFactor);
-  // window.gameSceneContainer.scale.set(scaleFactor);
 }
-
+resize()
 window.addEventListener("resize", resize);
-
 window.app = app;
 
 let animate = () => {
