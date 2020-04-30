@@ -1,9 +1,9 @@
-import { gameSceneBackgroundSound } from "./../sounds";
+import { gameSceneBackgroundSound } from "../sounds";
 export const startScene = () => {
   const lineWidth: number = 4;
   const lineColor: number = 0x00000;
   const beginFill: number = 0xffffff;
-  const buttoBackgroundnMouseOver: number = 0x000000;
+  const buttonBackgroundMouseOver: number = 0x000000;
 
   const buttonTextColor: number = 0x000000;
   const buttonTextMouseOver: number = 0xffffff;
@@ -15,7 +15,7 @@ export const startScene = () => {
   });
 
   function startMouseover(): void {
-    this.tint = buttoBackgroundnMouseOver;
+    this.tint = buttonBackgroundMouseOver;
     style.fill = buttonTextMouseOver;
   }
   function startMouseout(): void {

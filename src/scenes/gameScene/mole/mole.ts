@@ -10,37 +10,43 @@ let thirdHole = [];
 let quarterHole = [];
 let fiftyHole = [];
 
-function moleOnClick(e, x, y, width, height) {
-  let texture =
-    window.loader.resources["../assets/imgs/moles_dead.png"].texture;
-  let rectangle = new window.PIXI.Rectangle(x, y, width, height);
-  texture.frame = rectangle;
+const moleMousedown = (
+  moles,
+  mole,
+  deadMoleX,
+  deadMoleY,
+  deadMoleWidth,
+  deadMoleHeight,
+  scoreCount
+) => {
+  mole.on("mousedown", (e) => {
+    let texture =
+      window.loader.resources["../assets/imgs/moles_dead.png"].texture;
+    let rectangle = new window.PIXI.Rectangle(
+      deadMoleX,
+      deadMoleY,
+      deadMoleWidth,
+      deadMoleHeight
+    );
+    texture.frame = rectangle;
+    e.target.texture = texture;
 
-  let coords = { y: e.target.y };
+    window.scoreCount += scoreCount;
 
-  let tween = new window.TWEEN.Tween(coords)
-    .to({ y: window.app.view.height - e.height + 50 }, 500)
-    .onUpdate(function () {
-      e.target.y = coords.y;
-      e.target.texture = texture;
-    })
-    .onComplete(() => {
-      window.missesCount--;
-    });
-  tween.start();
-}
-function simpleMoleOnClick(e) {
-  window.scoreCount += 5;
+    animationDown(
+      firstHole,
+      secondHole,
+      thirdHole,
+      quarterHole,
+      fiftyHole,
+      moles,
+      mole,
+      true
+    );
+  });
+};
 
-  moleOnClick(e, 0, 0, 60, 150);
-}
-function strongMoleOnClick(e) {
-  window.scoreCount += 15;
-
-  moleOnClick(e, 60, 0, 70, 150);
-}
-
-let addMole = (array, arrayName, moles, mole) => {
+const addMole = (array, arrayName, moles, mole) => {
   array.push(mole);
   moles.addChild(mole);
   window.gameSceneContainer.addChild(moles);
@@ -51,7 +57,7 @@ let addMole = (array, arrayName, moles, mole) => {
     `ADD. ${arrayName} length: ${array.length}. Moles length: ${moles.children.length}`
   );
 };
-let ifElseChoiceHole = (
+const ifElseChoiceHole = (
   array,
   arrayName,
   moles,
@@ -65,7 +71,7 @@ let ifElseChoiceHole = (
   )
     addMole(array, arrayName, moles, mole);
 };
-let choiceHole = (moles, mole) => {
+const choiceHole = (moles, mole) => {
   ifElseChoiceHole(firstHole, "FIRST", moles, mole, 180, 190);
   ifElseChoiceHole(secondHole, "SECOND", moles, mole, 280, 290);
   ifElseChoiceHole(thirdHole, "THIRD", moles, mole, 380, 390);
@@ -73,7 +79,7 @@ let choiceHole = (moles, mole) => {
   ifElseChoiceHole(fiftyHole, "FIFTY", moles, mole, 580, 590);
 };
 
-let createMole = (
+const createMole = (
   resolve,
   moles,
   moleX,
@@ -81,7 +87,11 @@ let createMole = (
   rectangleY,
   rectangleWidth,
   rectangleHeight,
-  moleClick
+  deadMoleX,
+  deadMoleY,
+  deadMoleWidth,
+  deadMoleHeight,
+  scoreCount
 ) => {
   let texture = window.loader.resources["../assets/imgs/moles.png"].texture;
   let rectangle = new window.PIXI.Rectangle(
@@ -93,17 +103,25 @@ let createMole = (
   texture.frame = rectangle;
   let mole = new window.PIXI.Sprite(texture);
   mole.x = moleX;
-  setInterval(() => (mole.y = window.app.view.height - mole.height - 50), 1000);
+  mole.y = window.app.view.height - mole.height - 50;
 
   mole.interactive = true;
   animationUp(mole);
-  mole.on("mousedown", moleClick);
+  moleMousedown(
+    moles,
+    mole,
+    deadMoleX,
+    deadMoleY,
+    deadMoleWidth,
+    deadMoleHeight,
+    scoreCount
+  );
 
   choiceHole(moles, mole);
   resolve(moles);
 };
 
-const choiceCreateMole = (resolve) => {
+const choiceAndCreateMole = (resolve) => {
   let selectMole =
     simpleOrStrongMole[Math.floor(Math.random() * simpleOrStrongMole.length)];
 
@@ -124,7 +142,11 @@ const choiceCreateMole = (resolve) => {
         0,
         60,
         150,
-        simpleMoleOnClick
+        0,
+        0,
+        60,
+        150,
+        5
       );
       break;
     }
@@ -137,7 +159,11 @@ const choiceCreateMole = (resolve) => {
         0,
         70,
         150,
-        strongMoleOnClick
+        0,
+        0,
+        60,
+        150,
+        15
       );
       break;
     }
@@ -152,7 +178,9 @@ const removeMole = (moles) => {
       thirdHole,
       quarterHole,
       fiftyHole,
-      moles
+      moles,
+      0,
+      false
     );
   }, 3000);
 };
@@ -161,8 +189,8 @@ const createAndRemoveMole = () => {
   setInterval(() => {
     if (window.stopGame === false) {
       let p = new Promise((resolve, reject) => {
-        choiceCreateMole(resolve);
-      });
+        choiceAndCreateMole(resolve);
+      }).then((moles) => removeMole(moles));
     }
   }, 5000);
 };
@@ -172,22 +200,18 @@ export const showMoles = (currentTime) => {
     case 119:
       console.log(`FIRST IF. Current time: ${currentTime}.`);
       createAndRemoveMole();
-      createAndRemoveMole();
-      createAndRemoveMole();
       break;
     case 75:
       console.log(`SECOND IF. Current time: ${currentTime}.`);
-      createAndRemoveMole();
-      createAndRemoveMole();
-      createAndRemoveMole();
+      for (let i = 1; i <= 3; i++) {
+        createAndRemoveMole();
+      }
       break;
     case 0:
       console.log(`THIRD IF. Current time: ${currentTime}.`);
-      createAndRemoveMole();
-      createAndRemoveMole();
-      createAndRemoveMole();
-      createAndRemoveMole();
-      createAndRemoveMole();
+      for (let i = 1; i <= 5; i++) {
+        createAndRemoveMole();
+      }
       break;
   }
 };

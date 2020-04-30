@@ -1,21 +1,41 @@
+import {gameSceneBackgroundSound} from "../sounds";
+
 export const endScene = () => {
+  setInterval(
+    () =>
+      window.endSceneContainer.position.set(
+        (window.app.view.width - window.endSceneContainer.width) / 2,
+        (window.app.view.height - window.endSceneContainer.height) / 2
+      ),
+    1000
+  );
   let text = new window.PIXI.Text("The End!");
   text.position.set(0, 0);
   window.endSceneContainer.addChild(text);
 
   let score = new window.PIXI.Text(`Score: ${window.scoreCount}`);
-  score.position.set(0, 100);
+  score.position.set(0, 50);
   window.endSceneContainer.addChild(score);
 
-  window.hitMole.position.set(0, 200);
-  window.endSceneContainer.addChild(window.hitMole);
+  let hitMole = new window.PIXI.Text(`Hit: ${window.hitMoleCount}`);
+  hitMole.position.set(0, 100);
+  window.endSceneContainer.addChild(hitMole);
+
+  let missesMole = new window.PIXI.Text(`Misses: ${window.missesCount}`);
+  missesMole.position.set(0, 150);
+  window.endSceneContainer.addChild(missesMole);
+
+  setInterval(() => {
+    score.text = `Score: ${window.scoreCount}`;
+    hitMole.text = `Hit: ${window.hitMoleCount}`;
+    missesMole.text = `Misses: ${window.missesCount}`;
+  }, 1000);
 
   let tryAgain = new window.PIXI.Text("Try again");
   tryAgain.position.set(0, 250);
 
   tryAgain.interactive = true;
-
-  const tryAgainMousedown = (e) => {
+  tryAgain.on("mousedown", (e) => {
     window.endSceneContainer.visible = false;
     window.app.stage.removeChild(window.endSceneContainer);
 
@@ -25,9 +45,9 @@ export const endScene = () => {
     window.stopGame = false;
     window.countTime = 120;
     window.scoreCount = 0;
-  };
+    window.missesCount = 0;
 
-  tryAgain.on("mousedown", tryAgainMousedown);
-
+    gameSceneBackgroundSound.play()
+  });
   window.endSceneContainer.addChild(tryAgain);
 };

@@ -21,9 +21,6 @@ declare global {
     hitMoleCount: number;
     missesCount: number;
 
-    score: any;
-    hitMole: any;
-
     stopGame: boolean;
   }
 }
@@ -42,9 +39,6 @@ window.countTime = 120;
 window.scoreCount = 0;
 window.hitMoleCount = 0;
 window.missesCount = 0;
-
-window.score = new window.PIXI.Text(`Score: ${window.scoreCount}`);
-window.hitMole = new PIXI.Text(`Hit: ${window.hitMoleCount}`);
 
 window.stopGame = true;
 
@@ -78,7 +72,7 @@ function resize() {
 
   app.resize(newWidth, newHeight);
 }
-resize()
+resize();
 window.addEventListener("resize", resize);
 window.app = app;
 

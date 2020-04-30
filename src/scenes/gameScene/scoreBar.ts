@@ -10,9 +10,10 @@ export const scoreBar = () => {
   scoreBar.width = 234;
   window.gameSceneContainer.addChild(scoreBar);
 
-  window.score.position.set(0, 0);
-  console.log(`Score width: ${window.score.width}`);
-  scoreBar.addChild(window.score);
+  let score = new window.PIXI.Text(`Score: ${window.scoreCount}`);
+  score.position.set(0, 0);
+  console.log(`Score width: ${score.width}`);
+  scoreBar.addChild(score);
 
   const getRandomInt = (min, max) => {
     min = Math.ceil(min);
@@ -25,7 +26,7 @@ export const scoreBar = () => {
     setInterval(() => {
       if (window.countTime > 0 && window.stopGame === false) {
         timer.text = `Timer: ${window.countTime--}s`;
-        window.score.text = `Score: ${window.scoreCount}`;
+        score.text = `Score: ${window.scoreCount}`;
 
         showMoles(window.countTime);
       }

@@ -3,12 +3,11 @@ export const hole = (holes) => {
     let texture = window.loader.resources["../assets/imgs/grass.png"].texture;
     let grass = new window.PIXI.Sprite(texture);
     setInterval(
-      () => grass.position.set(x, (window.app.view.height - grass.height) - 50),
+      () => grass.position.set(x, window.app.view.height - grass.height - 50),
       1000
     );
 
     holes.addChild(grass);
-
     window.gameSceneContainer.addChild(holes);
   };
 
