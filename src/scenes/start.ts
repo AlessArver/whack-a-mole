@@ -1,4 +1,4 @@
-import { gameSceneBackgroundSound } from "../sounds";
+import {buttonClickSound, gameSceneBackgroundSound} from "../sounds";
 export const startScene = () => {
   const lineWidth: number = 4;
   const lineColor: number = 0x00000;
@@ -23,15 +23,19 @@ export const startScene = () => {
     style.fill = buttonTextColor;
   }
   function startMousedown(): void {
-    window.startSceneContainer.visible = false;
-    window.app.stage.removeChild(window.startSceneContainer);
+    buttonClickSound.play()
 
-    window.gameSceneContainer.visible = true;
-    window.app.stage.addChild(window.gameSceneContainer);
+    setTimeout(() => {
+      window.startSceneContainer.visible = false;
+      window.app.stage.removeChild(window.startSceneContainer);
 
-    window.stopGame = false;
+      window.gameSceneContainer.visible = true;
+      window.app.stage.addChild(window.gameSceneContainer);
 
-    gameSceneBackgroundSound.play();
+      window.stopGame = false;
+
+      gameSceneBackgroundSound.play();
+    }, 500)
   }
 
   let showButton = (): any => {

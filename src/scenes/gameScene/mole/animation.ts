@@ -58,18 +58,18 @@ export const animationDown = (
   isMoleDown
 ) => {
   if (isMoleDown === true && mole !== 0) {
-    ifElseChoiceHole(firstHole, "FIRST", moles, mole, 180, 190, moleDown, isMoleDown);
-    ifElseChoiceHole(secondHole, "SECOND", moles, mole, 280, 290, moleDown, isMoleDown);
-    ifElseChoiceHole(thirdHole, "THIRD", moles, mole, 380, 390, moleDown, isMoleDown);
-    ifElseChoiceHole(quarterHole, "QUARTER", moles, mole, 480, 490, moleDown, isMoleDown);
-    ifElseChoiceHole(fiftyHole, "FIFTY", moles, mole, 580, 590, moleDown, isMoleDown);
+    ifElseChoiceHole(firstHole, "FIRST", moles, mole, -190, -195, moleDown, isMoleDown);
+    ifElseChoiceHole(secondHole, "SECOND", moles, mole, -100, -95, moleDown, isMoleDown);
+    ifElseChoiceHole(thirdHole, "THIRD", moles, mole, 0, 0, moleDown, isMoleDown);
+    ifElseChoiceHole(quarterHole, "QUARTER", moles, mole, 100, 95, moleDown, isMoleDown);
+    ifElseChoiceHole(fiftyHole, "FIFTY", moles, mole, 195, 195, moleDown, isMoleDown);
   } else {
     moles.children.forEach((m) => {
-      ifElseChoiceHole(firstHole, "FIRST", moles, m, 180, 190, moleDown, isMoleDown);
-      ifElseChoiceHole(secondHole, "SECOND", moles, m, 280, 290, moleDown, isMoleDown);
-      ifElseChoiceHole(thirdHole, "THIRD", moles, m, 380, 390, moleDown, isMoleDown);
-      ifElseChoiceHole(quarterHole, "QUARTER", moles, m, 480, 490, moleDown, isMoleDown);
-      ifElseChoiceHole(fiftyHole, "FIFTY", moles, m, 580, 590, moleDown, isMoleDown);
+      ifElseChoiceHole(firstHole, "FIRST", moles, m, -190, -195, moleDown, isMoleDown);
+      ifElseChoiceHole(secondHole, "SECOND", moles, m, -100, -95, moleDown, isMoleDown);
+      ifElseChoiceHole(thirdHole, "THIRD", moles, m, 0, 0, moleDown, isMoleDown);
+      ifElseChoiceHole(quarterHole, "QUARTER", moles, m, 100, 95, moleDown, isMoleDown);
+      ifElseChoiceHole(fiftyHole, "FIFTY", moles, m, 195, 195, moleDown, isMoleDown);
     });
   }
 };

@@ -3,8 +3,7 @@ import { hole } from "./hole";
 import { scoreBar } from "./scoreBar";
 
 export const gameScene = () => {
-  let holes = new window.PIXI.Container(),
-    moles = new window.PIXI.Container();
+  let holes = new window.PIXI.Container()
 
   let whiteBackground = new window.PIXI.Graphics();
   whiteBackground.beginFill(0xffffff);
@@ -20,10 +19,7 @@ export const gameScene = () => {
 
   holes.zIndex = 2;
   whiteBackground.zIndex = 1;
-  moles.zIndex = 0;
 
-  holes.width = 388;
-  holes.height = 17;
   setInterval(
     () => (holes.x = (window.app.view.width - holes.width) / 2),
     1000
@@ -31,5 +27,4 @@ export const gameScene = () => {
 
   scoreBar();
   hole(holes);
-  // showMoles();
 };

@@ -1,6 +1,8 @@
 import { animationUp, animationDown } from "./animation";
-const moleXSimple: Array<number> = [190, 290, 390, 490, 590];
-const moleXStrong: Array<number> = [180, 280, 380, 480, 580];
+import { hitMoleSound } from "../../../sounds";
+
+const moleXSimple: Array<number> = [-190, -100, 0, 100, 195];
+const moleXStrong: Array<number> = [-195, -95, 0, 95, 195];
 
 let simpleOrStrongMole = ["simpleMole", "strongMole"];
 
@@ -32,6 +34,8 @@ const moleMousedown = (
     e.target.texture = texture;
 
     window.scoreCount += scoreCount;
+
+    hitMoleSound.play();
 
     animationDown(
       firstHole,
@@ -72,11 +76,11 @@ const ifElseChoiceHole = (
     addMole(array, arrayName, moles, mole);
 };
 const choiceHole = (moles, mole) => {
-  ifElseChoiceHole(firstHole, "FIRST", moles, mole, 180, 190);
-  ifElseChoiceHole(secondHole, "SECOND", moles, mole, 280, 290);
-  ifElseChoiceHole(thirdHole, "THIRD", moles, mole, 380, 390);
-  ifElseChoiceHole(quarterHole, "QUARTER", moles, mole, 480, 490);
-  ifElseChoiceHole(fiftyHole, "FIFTY", moles, mole, 580, 590);
+  ifElseChoiceHole(firstHole, "FIRST", moles, mole, -190, -195);
+  ifElseChoiceHole(secondHole, "SECOND", moles, mole, -100, -95);
+  ifElseChoiceHole(thirdHole, "THIRD", moles, mole, 0, 0);
+  ifElseChoiceHole(quarterHole, "QUARTER", moles, mole, 100, 95);
+  ifElseChoiceHole(fiftyHole, "FIFTY", moles, mole, 195, 195);
 };
 
 const createMole = (
@@ -102,8 +106,7 @@ const createMole = (
   );
   texture.frame = rectangle;
   let mole = new window.PIXI.Sprite(texture);
-  mole.x = moleX;
-  mole.y = window.app.view.height - mole.height - 50;
+  mole.position.set(moleX, window.app.view.height - mole.height - 50);
 
   mole.interactive = true;
   animationUp(mole);
@@ -127,10 +130,8 @@ const choiceAndCreateMole = (resolve) => {
 
   let moles = new window.PIXI.Container();
   moles.width = 388;
-  setInterval(
-    () => (moles.x = (window.app.view.width - moles.width) / 2),
-    1000
-  );
+  moles.x = (window.app.view.width - moles.width) / 2
+  setInterval(() => (moles.x = (window.app.view.width - moles.width) / 2), 100);
 
   switch (selectMole) {
     case "simpleMole": {
@@ -203,15 +204,17 @@ export const showMoles = (currentTime) => {
       break;
     case 75:
       console.log(`SECOND IF. Current time: ${currentTime}.`);
-      for (let i = 1; i <= 3; i++) {
-        createAndRemoveMole();
-      }
+      createAndRemoveMole();
+      createAndRemoveMole();
+      createAndRemoveMole();
       break;
     case 0:
       console.log(`THIRD IF. Current time: ${currentTime}.`);
-      for (let i = 1; i <= 5; i++) {
-        createAndRemoveMole();
-      }
+      createAndRemoveMole();
+      createAndRemoveMole();
+      createAndRemoveMole();
+      createAndRemoveMole();
+      createAndRemoveMole();
       break;
   }
 };
