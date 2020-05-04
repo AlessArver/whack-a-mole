@@ -32,7 +32,7 @@ export const scoreBar = () => {
       }
     }, 1000);
 
-    timer.position.set(97, 0);
+    timer.position.set(150, 0);
     scoreBar.addChild(timer);
   };
 
@@ -61,5 +61,5 @@ export const scoreBar = () => {
   };
 
   timerScoreBar();
-  stopButtonScoreBar(300);
+  stopButtonScoreBar(350);
 };

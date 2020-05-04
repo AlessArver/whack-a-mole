@@ -1,7 +1,7 @@
 export let animationUp = (mole) => {
   let coords = { y: window.app.view.height - mole.height - 50 };
   let tween = new window.TWEEN.Tween(coords)
-    .to({ y: coords.y }, 500)
+    .to({ y: coords.y }, 1000)
     .onUpdate(function () {
       mole.y = coords.y;
     });
