@@ -25,7 +25,7 @@ export class StartScene {
     });
 
     this._container = new window.PIXI.Container();
-    this.createShowButton();
+    this._createShowButton();
   }
 
   get container() {
@@ -50,7 +50,14 @@ export class StartScene {
     }, 500)
   }
 
-  createShowButton() {
+  public resize(width: number, height: number) {
+    this._startButton.position.set(
+      (width - this._startButton.width) / 2,
+      (height - this._startButton.height) / 2
+    );
+  }
+
+  private _createShowButton() {
     const buttonText = new window.PIXI.Text("Start", this._style);
 
     buttonText.position.set(45, 2);
@@ -60,12 +67,7 @@ export class StartScene {
     startButton.beginFill(this._data.beginFill);
     startButton.drawRect(0, 0, 200, 64);
     startButton.endFill();
-    setInterval(() => {
-      startButton.position.set(
-        (window.app.view.width - startButton.width) / 2,
-        (window.app.view.height - startButton.height) / 2
-      );
-    }, 1000);
+
 
     startButton.interactive = true;
 

@@ -42,22 +42,16 @@ export class EndScene {
       hitMole.text = `Hit: ${window.hitMoleCount}`;
       missesMole.text = `Misses: ${window.missesCount}`;
     }, 1000);
-
-    this._resize()
   }
 
   get container() {
     return this._container
   }
 
-  private _resize() {
-    setInterval(
-      () =>
-      this._container.position.set(
-        (window.app.view.width - this._container.width) / 2,
-        (window.app.view.height - this._container.height) / 2
-      ),
-      1000
+  public resize(width: number, height: number) {
+    this._container.position.set(
+      (width - this._container.width) / 2,
+      (height - this._container.height) / 2
     );
   }
 }

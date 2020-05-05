@@ -8,6 +8,7 @@ export const hole = (holes, container) => {
   let createHole = (x: number) => {
     let texture = window.loader.resources["../assets/imgs/grass.png"].texture;
     let grass = new window.PIXI.Sprite(texture);
+    grass.position.set(x, window.app.view.height - grass.height - 50)
     setInterval(
       () => grass.position.set(x, window.app.view.height - grass.height - 50),
       1000

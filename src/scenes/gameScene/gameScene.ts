@@ -25,22 +25,15 @@ export class GameScene {
     this._whiteBackground.zIndex = 1;
 
     this.initScene();
-    this.resize()
   }
 
   get container() {
     return this._container
   }
 
-  public resize() {
-    setInterval(
-      () => (this._whiteBackground.y = (window.app.view.height - this._whiteBackground.height) + 50),
-      1000
-    );
-    setInterval(
-      () => (this._holes.x = (window.app.view.width - this._holes.width) / 2),
-      1000
-    );
+  public resize(width: number, height: number) {
+    this._whiteBackground.y = (height - this._whiteBackground.height) + 50;
+    this._holes.x = (width - this._holes.width) / 2;
   }
 
   private initScene() {

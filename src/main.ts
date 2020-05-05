@@ -32,7 +32,6 @@ class Game {
     document.body.appendChild(this._app.view);
     window.addEventListener("resize", this.resize);
     this.initCanvasStyles();
-    this.resize();
     this.setup();
   }
 
@@ -52,6 +51,7 @@ class Game {
         });
 
         this.scenesSettings();
+        this.resize();
       });
   }
 
@@ -118,6 +118,10 @@ class Game {
     this._app.view.height = newHeight;
 
     this._app.resize(newWidth, newHeight);
+
+    this._startScene.resize(newWidth, newHeight);
+    this._gameScene.resize(newWidth, newHeight);
+    this._endScene.resize(newWidth, newHeight);
   }
 
   private initCanvasStyles() {
