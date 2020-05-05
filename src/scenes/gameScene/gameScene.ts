@@ -2,29 +2,43 @@ import { showMoles } from "./mole/mole";
 import { hole } from "./hole";
 import { scoreBar } from "./scoreBar";
 
-export const gameScene = () => {
-  let holes = new window.PIXI.Container()
+export class GameScene {
+  private _holes;
+  private _whiteBackground;
 
-  let whiteBackground = new window.PIXI.Graphics();
-  whiteBackground.beginFill(0xffffff);
-  whiteBackground.drawRect(0, 0, window.app.view.width, 100);
-  whiteBackground.endFill();
-  setInterval(
-    () => (whiteBackground.y = (window.app.view.height - whiteBackground.height) + 50),
-    1000
-  );
-  window.gameSceneContainer.addChild(whiteBackground);
+  constructor() {
+    this._holes = new window.PIXI.Container()
 
-  window.gameSceneContainer.sortableChildren = true;
+    this._whiteBackground = new window.PIXI.Graphics();
+    this._whiteBackground.beginFill(0xffffff);
+    this._whiteBackground.drawRect(0, 0, window.app.view.width, 100);
+    this._whiteBackground.endFill();
 
-  holes.zIndex = 2;
-  whiteBackground.zIndex = 1;
+    window.gameSceneContainer.addChild(this._whiteBackground);
+  
+    window.gameSceneContainer.sortableChildren = true;
+  
+    this._holes.zIndex = 2;
+    this._whiteBackground.zIndex = 1;
 
-  setInterval(
-    () => (holes.x = (window.app.view.width - holes.width) / 2),
-    1000
-  );
+    this.initScene();
+    this.resize()
+  }
 
-  scoreBar();
-  hole(holes);
-};
+  public resize() {
+    setInterval(
+      () => (this._whiteBackground.y = (window.app.view.height - this._whiteBackground.height) + 50),
+      1000
+    );
+    setInterval(
+      () => (this._holes.x = (window.app.view.width - this._holes.width) / 2),
+      1000
+    );
+  }
+
+  private initScene() {
+    scoreBar();
+    hole(this._holes);
+  }
+
+}
