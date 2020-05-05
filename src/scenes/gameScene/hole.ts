@@ -1,4 +1,10 @@
-export const hole = (holes) => {
+class Hole {
+  constructor() {
+
+  }
+}
+
+export const hole = (holes, container) => {
   let createHole = (x: number) => {
     let texture = window.loader.resources["../assets/imgs/grass.png"].texture;
     let grass = new window.PIXI.Sprite(texture);
@@ -8,7 +14,7 @@ export const hole = (holes) => {
     );
 
     holes.addChild(grass);
-    window.gameSceneContainer.addChild(holes);
+    container.addChild(holes);
   };
 
   createHole(0);

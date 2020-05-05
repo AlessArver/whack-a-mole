@@ -2,10 +2,16 @@ import {
   gameSceneBackgroundSound
 } from "../sounds";
 
-export class EndScene {
-  private _container
+type EndSceneOptions = {
+  onTryAgain: () => void
+}
 
-  constructor() {
+export class EndScene {
+  private _container;
+  private _onTryAgainCallback;
+
+  constructor(options: EndSceneOptions) {
+    this._onTryAgainCallback = options.onTryAgain;
     this._container = new window.PIXI.Container();
 
     let text = new window.PIXI.Text("The End!");
@@ -28,7 +34,7 @@ export class EndScene {
     tryAgain.position.set(0, 250);
 
     tryAgain.interactive = true;
-    tryAgain.on("mousedown", this._onmousedownTryAgain);
+    tryAgain.on("mousedown", this._onTryAgainCallback);
     this._container.addChild(tryAgain);
 
     setInterval(() => {
@@ -42,21 +48,6 @@ export class EndScene {
 
   get container() {
     return this._container
-  }
-
-  private _onmousedownTryAgain = () => {
-    this._container.visible = false;
-    window.app.stage.removeChild(this._container);
-
-    window.app.stage.addChild(window.gameSceneContainer);
-    window.gameSceneContainer.visible = true;
-
-    window.stopGame = false;
-    window.countTime = 120;
-    window.scoreCount = 0;
-    window.missesCount = 0;
-
-    gameSceneBackgroundSound.play()
   }
 
   private _resize() {

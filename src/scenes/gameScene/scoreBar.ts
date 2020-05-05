@@ -1,6 +1,6 @@
 import { showMoles } from "./mole/mole";
 import { gameSceneBackgroundSound } from "../../sounds";
-export const scoreBar = () => {
+export const scoreBar = (container) => {
   let scoreBar = new window.PIXI.Container();
   setInterval(
     () =>
@@ -8,7 +8,7 @@ export const scoreBar = () => {
     1000
   );
   scoreBar.width = 234;
-  window.gameSceneContainer.addChild(scoreBar);
+  container.addChild(scoreBar);
 
   let score = new window.PIXI.Text(`Score: ${window.scoreCount}`);
   score.position.set(0, 0);
@@ -28,7 +28,7 @@ export const scoreBar = () => {
         timer.text = `Timer: ${window.countTime--}s`;
         score.text = `Score: ${window.scoreCount}`;
 
-        showMoles(window.countTime);
+        showMoles(window.countTime, container);
       }
     }, 1000);
 

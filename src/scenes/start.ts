@@ -1,5 +1,9 @@
 import {buttonClickSound, gameSceneBackgroundSound} from "../sounds";
 
+type StartSceneOptions = {
+  onGameStart: () => void
+}
+
 export class StartScene {
   private _data = {
     beginFill: 0xffffff,
@@ -10,8 +14,10 @@ export class StartScene {
   private _style;
   private _startButton;
   private _container;
+  private _onGameSceneCallback
 
-  constructor() {
+  constructor(options: StartSceneOptions) {
+    this._onGameSceneCallback = options.onGameStart;
     this._style = new window.PIXI.TextStyle({
       fontFamily: "sans-serif",
       fontSize: 50,
@@ -40,15 +46,7 @@ export class StartScene {
     buttonClickSound.play()
 
     setTimeout(() => {
-      this._container.visible = false;
-      window.app.stage.removeChild(this._container);
-
-      window.gameSceneContainer.visible = true;
-      window.app.stage.addChild(window.gameSceneContainer);
-
-      window.stopGame = false;
-
-      gameSceneBackgroundSound.play();
+      this._onGameSceneCallback();
     }, 500)
   }
 

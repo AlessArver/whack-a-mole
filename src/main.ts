@@ -43,9 +43,13 @@ class Game {
       .add("../assets/imgs/moles.png")
       .add("../assets/imgs/moles_dead.png")
       .load(() => {
-        this._startScene = new StartScene();
+        this._startScene = new StartScene({
+          onGameStart: this._startGame
+        });
         this._gameScene = new GameScene();
-        this._endScene = new EndScene()
+        this._endScene = new EndScene({
+          onTryAgain: this.tryAgain
+        });
 
         this.scenesSettings();
       });
@@ -58,8 +62,8 @@ class Game {
     const endOfTheGame = (): void => {
       setInterval(() => {
         if (window.countTime === 0) {
-          window.gameSceneContainer.visible = false;
-          window.app.stage.removeChild(window.gameSceneContainer);
+          this._gameScene.container.visible = false;
+          window.app.stage.removeChild(this._gameScene.container);
 
           this._endScene.container.visible = true;
           window.app.stage.addChild(this._endScene.container);
@@ -72,6 +76,32 @@ class Game {
     };
     endOfTheGame();
   };
+
+  private tryAgain = () => {
+    this._endScene.container.visible = false;
+    window.app.stage.removeChild(this._endScene.container);
+
+    window.app.stage.addChild(this._gameScene.container);
+    this._gameScene.container.visible = true;
+
+    window.stopGame = false;
+    window.countTime = 120;
+    window.scoreCount = 0;
+    window.missesCount = 0;
+
+    gameSceneBackgroundSound.play()
+  }
+
+  private _startGame = () => {
+    this._startScene.container.visible = false;
+    window.app.stage.removeChild(this._startScene.container);
+
+    this._gameScene.container.visible = true;
+    window.app.stage.addChild(this._gameScene.container);
+
+    window.stopGame = false;
+    gameSceneBackgroundSound.play();
+  }
 
   private resize = () => {
     const scaleFactor = Math.min(
@@ -106,8 +136,6 @@ declare global {
     loader: any;
     renderer: any;
 
-    gameSceneContainer: any;
-
     countTime: number;
     scoreCount: number;
     hitMoleCount: number;
@@ -122,8 +150,6 @@ window.PIXI = PIXI;
 
 window.loader = new PIXI.Loader();
 window.renderer = new PIXI.Renderer();
-
-window.gameSceneContainer = new window.PIXI.Container();
 
 window.countTime = 120;
 window.scoreCount = 0;

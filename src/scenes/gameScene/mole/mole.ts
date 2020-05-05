@@ -50,10 +50,10 @@ const moleMousedown = (
   });
 };
 
-const addMole = (array, arrayName, moles, mole) => {
+const addMole = (array, arrayName, moles, mole, container) => {
   array.push(mole);
   moles.addChild(mole);
-  window.gameSceneContainer.addChild(moles);
+  container.addChild(moles);
 
   window.missesCount++;
 
@@ -67,20 +67,21 @@ const ifElseChoiceHole = (
   moles,
   mole,
   moleXFirst,
-  moleXSecond
+  moleXSecond,
+  container
 ) => {
   if (
     (mole.x === moleXFirst && array.length === 0) ||
     (mole.x === moleXSecond && array.length === 0)
   )
-    addMole(array, arrayName, moles, mole);
+    addMole(array, arrayName, moles, mole, container);
 };
-const choiceHole = (moles, mole) => {
-  ifElseChoiceHole(firstHole, "FIRST", moles, mole, -190, -195);
-  ifElseChoiceHole(secondHole, "SECOND", moles, mole, -100, -95);
-  ifElseChoiceHole(thirdHole, "THIRD", moles, mole, 0, 0);
-  ifElseChoiceHole(quarterHole, "QUARTER", moles, mole, 100, 95);
-  ifElseChoiceHole(fiftyHole, "FIFTY", moles, mole, 195, 195);
+const choiceHole = (moles, mole, container) => {
+  ifElseChoiceHole(firstHole, "FIRST", moles, mole, -190, -195, container);
+  ifElseChoiceHole(secondHole, "SECOND", moles, mole, -100, -95, container);
+  ifElseChoiceHole(thirdHole, "THIRD", moles, mole, 0, 0, container);
+  ifElseChoiceHole(quarterHole, "QUARTER", moles, mole, 100, 95, container);
+  ifElseChoiceHole(fiftyHole, "FIFTY", moles, mole, 195, 195, container);
 };
 
 const createMole = (
@@ -95,7 +96,8 @@ const createMole = (
   deadMoleY,
   deadMoleWidth,
   deadMoleHeight,
-  scoreCount
+  scoreCount,
+  container
 ) => {
   let texture = window.loader.resources["../assets/imgs/moles.png"].texture;
   let rectangle = new window.PIXI.Rectangle(
@@ -120,11 +122,11 @@ const createMole = (
     scoreCount
   );
 
-  choiceHole(moles, mole);
+  choiceHole(moles, mole, container);
   resolve(moles);
 };
 
-const choiceAndCreateMole = (resolve) => {
+const choiceAndCreateMole = (resolve, container) => {
   let selectMole =
     simpleOrStrongMole[Math.floor(Math.random() * simpleOrStrongMole.length)];
 
@@ -147,7 +149,8 @@ const choiceAndCreateMole = (resolve) => {
         0,
         60,
         150,
-        5
+        5,
+        container
       );
       break;
     }
@@ -164,7 +167,8 @@ const choiceAndCreateMole = (resolve) => {
         0,
         60,
         150,
-        15
+        15,
+        container
       );
       break;
     }
@@ -186,35 +190,35 @@ const removeMole = (moles) => {
   }, 3000);
 };
 
-const createAndRemoveMole = () => {
+const createAndRemoveMole = (container) => {
   setInterval(() => {
     if (window.stopGame === false) {
       let p = new Promise((resolve, reject) => {
-        choiceAndCreateMole(resolve);
+        choiceAndCreateMole(resolve, container);
       }).then((moles) => removeMole(moles));
     }
   }, 5000);
 };
 
-export const showMoles = (currentTime) => {
+export const showMoles = (currentTime, container) => {
   switch (currentTime) {
     case 119:
       console.log(`FIRST IF. Current time: ${currentTime}.`);
-      createAndRemoveMole();
+      createAndRemoveMole(container);
       break;
     case 75:
       console.log(`SECOND IF. Current time: ${currentTime}.`);
-      createAndRemoveMole();
-      createAndRemoveMole();
-      createAndRemoveMole();
+      createAndRemoveMole(container);
+      createAndRemoveMole(container);
+      createAndRemoveMole(container);
       break;
     case 0:
       console.log(`THIRD IF. Current time: ${currentTime}.`);
-      createAndRemoveMole();
-      createAndRemoveMole();
-      createAndRemoveMole();
-      createAndRemoveMole();
-      createAndRemoveMole();
+      createAndRemoveMole(container);
+      createAndRemoveMole(container);
+      createAndRemoveMole(container);
+      createAndRemoveMole(container);
+      createAndRemoveMole(container);
       break;
   }
 };
