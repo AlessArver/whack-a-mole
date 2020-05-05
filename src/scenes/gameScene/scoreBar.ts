@@ -19,7 +19,6 @@ export class ScoreBar {
     this._container.addChild(this._timer);
 
     this._createStopButton();
-    this.resize();
   }
 
   get container() {
@@ -31,12 +30,8 @@ export class ScoreBar {
     this._score.text = `Score: ${scoreCount}`;
   }
 
-  public resize = () => {
-    setInterval(
-      () =>
-        this._container.position.set((window.app.view.width - this._container.width) / 2, 0),
-      1000
-    );
+  public resize = (width: number, height: number) => {
+      this._container.position.set((width - this._container.width) / 2, 0)
   }
 
   private _stopButtonMousedown = (e) => {

@@ -1,26 +1,24 @@
-class Hole {
-  constructor() {
-
-  }
+type HoleOptions = {
+  x: number
 }
 
-export const hole = (holes, container) => {
-  let createHole = (x: number) => {
-    let texture = window.loader.resources["../assets/imgs/grass.png"].texture;
-    let grass = new window.PIXI.Sprite(texture);
-    grass.position.set(x, window.app.view.height - grass.height - 50)
-    setInterval(
-      () => grass.position.set(x, window.app.view.height - grass.height - 50),
-      1000
-    );
+export class Hole {
+  private _texture;
+  private _grass;
+  private _x;
 
-    holes.addChild(grass);
-    container.addChild(holes);
-  };
+  constructor(options: HoleOptions) {
+    this._x = options.x
+    this._texture = window.loader.resources["../assets/imgs/grass.png"].texture;
+    this._grass = new window.PIXI.Sprite(this._texture);
+    this._grass.position.set(this._x, window.app.view.height - this._grass.height - 50)
+  }
 
-  createHole(0);
-  createHole(97);
-  createHole(194);
-  createHole(291);
-  createHole(388);
-};
+  get grass() {
+    return this._grass;
+  }
+
+  resize = (width: number, height: number) => {
+    this._grass.position.set(this._x, height - this._grass.height - 50)
+  }
+}
