@@ -1,7 +1,97 @@
 import * as PIXI from "pixi.js";
 import TWEEN from "@tweenjs/tween.js";
-import { Scenes } from "./scenes/scenes";
+import { gameScene } from "./scenes/gameScene/gameScene";
+import { startScene } from "./scenes/start";
+import { endScene } from "./scenes/endScene";
+import { gameSceneBackgroundSound } from "./sounds";
 
+// Responsive app
+const logicalWidth: number = 320;
+const logicalHeight: number = 240;
+
+class Game {
+  private _data = {
+    countTime: 120,
+    scoreCount: 0,
+    hitMoleCount: 0,
+    missesCount: 0,
+    stopGame: true
+  }
+  private _app;
+
+  constructor() {
+    this._app = new PIXI.Application({
+      autoDensity: true,
+      transparent: true,
+    });
+    window.app = this._app;
+    document.body.appendChild(this._app.view);
+    window.addEventListener("resize", this.resize);
+    this.initCanvasStyles();
+    this.resize();
+    this.setup();
+  }
+
+  private setup() {
+    // let loader = new PIXI.Loader();
+    window.loader
+      .add("../assets/imgs/grass.png")
+      .add("../assets/imgs/moles.png")
+      .add("../assets/imgs/moles_dead.png")
+      .load(() => {
+        this.scenesSettings();
+
+        startScene();
+        gameScene();
+        endScene();
+      });
+  }
+
+  private scenesSettings () {
+    window.startSceneContainer.visible = true;
+    window.app.stage.addChild(window.startSceneContainer);
+  
+    const endOfTheGame = (): void => {
+      setInterval(() => {
+        if (window.countTime === 0) {
+          window.gameSceneContainer.visible = false;
+          window.app.stage.removeChild(window.gameSceneContainer);
+  
+          window.endSceneContainer.visible = true;
+          window.app.stage.addChild(window.endSceneContainer);
+  
+          window.stopGame = true;
+  
+          gameSceneBackgroundSound.stop()
+        }
+      }, 1000);
+    };
+    endOfTheGame();
+  };
+
+  private resize() { 
+    const scaleFactor = Math.min(
+      window.innerWidth / logicalWidth,
+      window.innerHeight / logicalHeight
+    );
+    const newWidth: number = Math.ceil(logicalWidth * scaleFactor);
+    const newHeight: number = Math.ceil(logicalHeight * scaleFactor);
+  
+    this._app.view.style.width = `${newWidth}px`;
+    this._app.view.style.height = `${newHeight}px`;
+  
+    this._app.view.width = newWidth;
+    this._app.view.height = newHeight;
+  
+    this._app.resize(/*newWidth, newHeight*/);
+  }
+
+  private initCanvasStyles() {
+    this._app.view.style.display = "block";
+    this._app.view.style.margin = "auto";
+    this._app.view.style.border = "5px solid black";
+  }
+}
 declare global {
   interface Window {
     TWEEN: any;
@@ -42,54 +132,10 @@ window.missesCount = 0;
 
 window.stopGame = true;
 
-// Responsive app
-const logicalWidth: number = 320;
-const logicalHeight: number = 240;
-
-const app = new PIXI.Application({
-  autoDensity: true,
-  transparent: true,
-});
-document.body.appendChild(app.view);
-
-function resize() {
-  const scaleFactor = Math.min(
-    window.innerWidth / logicalWidth,
-    window.innerHeight / logicalHeight
-  );
-  const newWidth: number = Math.ceil(logicalWidth * scaleFactor);
-  const newHeight: number = Math.ceil(logicalHeight * scaleFactor);
-
-  app.view.style.width = `${newWidth}px`;
-  app.view.style.height = `${newHeight}px`;
-
-  app.view.width = newWidth;
-  app.view.height = newHeight;
-
-  app.view.style.display = "block";
-  app.view.style.margin = "auto";
-  app.view.style.border = "5px solid black";
-
-  app.resize(/*newWidth, newHeight*/);
-}
-resize();
-window.addEventListener("resize", resize);
-window.app = app;
-
 let animate = () => {
   requestAnimationFrame(animate);
   TWEEN.update();
 };
 animate();
 
-const setup = () => {
-  Scenes();
-};
-
-window.loader
-  .add("../assets/imgs/grass.png")
-  .add("../assets/imgs/moles.png")
-  .add("../assets/imgs/moles_dead.png")
-  .load(setup);
-
-const play = (delta) => {};
+const newGame = new Game();
