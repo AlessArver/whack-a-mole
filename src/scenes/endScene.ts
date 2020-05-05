@@ -1,41 +1,42 @@
-import {gameSceneBackgroundSound} from "../sounds";
+import {
+  gameSceneBackgroundSound
+} from "../sounds";
 
-export const endScene = () => {
-  setInterval(
-    () =>
-      window.endSceneContainer.position.set(
-        (window.app.view.width - window.endSceneContainer.width) / 2,
-        (window.app.view.height - window.endSceneContainer.height) / 2
-      ),
-    1000
-  );
-  let text = new window.PIXI.Text("The End!");
-  text.position.set(0, 0);
-  window.endSceneContainer.addChild(text);
+export class EndScene {
+  constructor() {
+    let text = new window.PIXI.Text("The End!");
+    text.position.set(0, 0);
+    window.endSceneContainer.addChild(text);
 
-  let score = new window.PIXI.Text(`Score: ${window.scoreCount}`);
-  score.position.set(0, 50);
-  window.endSceneContainer.addChild(score);
+    let score = new window.PIXI.Text(`Score: ${window.scoreCount}`);
+    score.position.set(0, 50);
+    window.endSceneContainer.addChild(score);
 
-  let hitMole = new window.PIXI.Text(`Hit: ${window.hitMoleCount}`);
-  hitMole.position.set(0, 100);
-  window.endSceneContainer.addChild(hitMole);
+    let hitMole = new window.PIXI.Text(`Hit: ${window.hitMoleCount}`);
+    hitMole.position.set(0, 100);
+    window.endSceneContainer.addChild(hitMole);
 
-  let missesMole = new window.PIXI.Text(`Misses: ${window.missesCount}`);
-  missesMole.position.set(0, 150);
-  window.endSceneContainer.addChild(missesMole);
+    let missesMole = new window.PIXI.Text(`Misses: ${window.missesCount}`);
+    missesMole.position.set(0, 150);
+    window.endSceneContainer.addChild(missesMole);
+    
+    let tryAgain = new window.PIXI.Text("Try again");
+    tryAgain.position.set(0, 250);
 
-  setInterval(() => {
-    score.text = `Score: ${window.scoreCount}`;
-    hitMole.text = `Hit: ${window.hitMoleCount}`;
-    missesMole.text = `Misses: ${window.missesCount}`;
-  }, 1000);
+    tryAgain.interactive = true;
+    tryAgain.on("mousedown", this._onmousedownTryAgain);
+    window.endSceneContainer.addChild(tryAgain);
 
-  let tryAgain = new window.PIXI.Text("Try again");
-  tryAgain.position.set(0, 250);
+    setInterval(() => {
+      score.text = `Score: ${window.scoreCount}`;
+      hitMole.text = `Hit: ${window.hitMoleCount}`;
+      missesMole.text = `Misses: ${window.missesCount}`;
+    }, 1000);
 
-  tryAgain.interactive = true;
-  tryAgain.on("mousedown", (e) => {
+    this._resize()
+  }
+
+  private _onmousedownTryAgain = () => {
     window.endSceneContainer.visible = false;
     window.app.stage.removeChild(window.endSceneContainer);
 
@@ -48,6 +49,16 @@ export const endScene = () => {
     window.missesCount = 0;
 
     gameSceneBackgroundSound.play()
-  });
-  window.endSceneContainer.addChild(tryAgain);
-};
+  }
+
+  private _resize() {
+    setInterval(
+      () =>
+      window.endSceneContainer.position.set(
+        (window.app.view.width - window.endSceneContainer.width) / 2,
+        (window.app.view.height - window.endSceneContainer.height) / 2
+      ),
+      1000
+    );
+  }
+}

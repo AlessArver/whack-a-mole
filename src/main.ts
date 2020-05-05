@@ -2,7 +2,7 @@ import * as PIXI from "pixi.js";
 import TWEEN from "@tweenjs/tween.js";
 import { GameScene } from "./scenes/gameScene/gameScene";
 import { StartScene } from "./scenes/start";
-import { endScene } from "./scenes/endScene";
+import { EndScene } from "./scenes/endScene";
 import { gameSceneBackgroundSound } from "./sounds";
 
 // Responsive app
@@ -43,7 +43,7 @@ class Game {
 
         let start = new StartScene();
         let gameScene = new GameScene();
-        endScene();
+        let endScene = new EndScene()
       });
   }
 
