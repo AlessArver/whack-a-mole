@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
 import TWEEN from "@tweenjs/tween.js";
 import { gameScene } from "./scenes/gameScene/gameScene";
-import { startScene } from "./scenes/start";
+import { StartScene } from "./scenes/start";
 import { endScene } from "./scenes/endScene";
 import { gameSceneBackgroundSound } from "./sounds";
 
@@ -41,7 +41,7 @@ class Game {
       .load(() => {
         this.scenesSettings();
 
-        startScene();
+        let start = new StartScene();
         gameScene();
         endScene();
       });

@@ -1,28 +1,36 @@
 import {buttonClickSound, gameSceneBackgroundSound} from "../sounds";
-export const startScene = () => {
-  const lineWidth: number = 4;
-  const lineColor: number = 0x00000;
-  const beginFill: number = 0xffffff;
-  const buttonBackgroundMouseOver: number = 0x000000;
 
-  const buttonTextColor: number = 0x000000;
-  const buttonTextMouseOver: number = 0xffffff;
-
-  let style = new window.PIXI.TextStyle({
-    fontFamily: "sans-serif",
-    fontSize: 50,
-    align: "center",
-  });
-
-  function startMouseover(): void {
-    this.tint = buttonBackgroundMouseOver;
-    style.fill = buttonTextMouseOver;
+export class StartScene {
+  private _data = {
+    beginFill: 0xffffff,
+  
+    buttonTextColor: 0x000000,
+    buttonTextMouseOver: 0xffffff
   }
-  function startMouseout(): void {
-    this.tint = beginFill;
-    style.fill = buttonTextColor;
+  private _style;
+  private _startButton;
+
+  constructor() {
+    this._style = new window.PIXI.TextStyle({
+      fontFamily: "sans-serif",
+      fontSize: 50,
+      align: "center",
+    });
+    
+    this.createShowButton();
   }
-  function startMousedown(): void {
+
+  private _startMouseover = (e) => {
+    this._startButton.tint = 0x000000;
+    this._style.fill = this._data.buttonTextMouseOver;
+  }
+
+  private _startMouseout = (e) => {
+    this._startButton.tint = this._data.beginFill;
+    this._style.fill = this._data.buttonTextColor;
+  }
+
+  private _startMousedown = () => {
     buttonClickSound.play()
 
     setTimeout(() => {
@@ -38,14 +46,14 @@ export const startScene = () => {
     }, 500)
   }
 
-  let showButton = (): any => {
-    const buttonText = new window.PIXI.Text("Start", style);
+  createShowButton() {
+    const buttonText = new window.PIXI.Text("Start", this._style);
 
     buttonText.position.set(45, 2);
 
     let startButton = new window.PIXI.Graphics();
-    startButton.lineStyle(lineWidth, lineColor, 1);
-    startButton.beginFill(beginFill);
+    startButton.lineStyle(4, 0x00000, 1);
+    startButton.beginFill(this._data.beginFill);
     startButton.drawRect(0, 0, 200, 64);
     startButton.endFill();
     setInterval(() => {
@@ -57,17 +65,17 @@ export const startScene = () => {
 
     startButton.interactive = true;
 
-    startButton.on("mouseover", startMouseover);
-    startButton.on("mouseout", startMouseout);
-    startButton.on("mousedown", startMousedown);
+    startButton.on("mouseover", this._startMouseover);
+    startButton.on("mouseout", this._startMouseout);
+    startButton.on("mousedown", this._startMousedown);
 
     startButton.addChild(buttonText);
-    window.startSceneContainer.addChild(startButton);
+    this._startButton = startButton;
+    window.startSceneContainer.addChild(this._startButton);
 
     const animate = () => {
       requestAnimationFrame(animate);
       window.app.render(startButton);
     };
-  };
-  showButton();
-};
+  }
+}
