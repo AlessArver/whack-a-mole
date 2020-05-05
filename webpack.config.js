@@ -13,7 +13,7 @@ module.exports = {
     },
     module: {
         rules: [
-            { test: /\.ts$/, loader: "awesome-typescript-loader", exclude: "/node_modules/" },
+            { test: /\.ts$/, loader: "ts-loader", exclude: "/node_modules/" },
             { test: /\.(gif|png|jpe?g|svg|xml)$/i, use: "file-loader" }
         ]
     },

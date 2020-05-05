@@ -1,5 +1,5 @@
 import * as PIXI from "pixi.js";
-import TWEEN from "tween";
+import TWEEN from "@tweenjs/tween.js";
 import { Scenes } from "./scenes/scenes";
 
 declare global {
@@ -47,7 +47,7 @@ const logicalWidth: number = 320;
 const logicalHeight: number = 240;
 
 const app = new PIXI.Application({
-  autoResize: true,
+  autoDensity: true,
   transparent: true,
 });
 document.body.appendChild(app.view);
@@ -70,7 +70,7 @@ function resize() {
   app.view.style.margin = "auto";
   app.view.style.border = "5px solid black";
 
-  app.resize(newWidth, newHeight);
+  app.resize(/*newWidth, newHeight*/);
 }
 resize();
 window.addEventListener("resize", resize);

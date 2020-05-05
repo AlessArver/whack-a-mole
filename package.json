@@ -9,6 +9,7 @@
     "build": "webpack --mode production"
   },
   "dependencies": {
+    "@tweenjs/tween.js": "^18.5.0",
     "globally": "^0.0.0",
     "howler": "^2.1.3",
     "pixi.js": "^5.2.1",
@@ -17,7 +18,6 @@
   },
   "devDependencies": {
     "@types/pixi.js": "^5.0.0",
-    "awesome-typescript-loader": "^5.2.1",
     "expose-loader": "^0.7.5",
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.0.4",
