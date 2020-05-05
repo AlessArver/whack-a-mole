@@ -1,10 +1,12 @@
 import { hole } from "./hole";
-import { scoreBar } from "./scoreBar";
+import { ScoreBar } from "./scoreBar";
+import { showMoles } from "./mole/mole";
 
 export class GameScene {
   private _holes;
   private _whiteBackground;
-  private _container
+  private _container;
+  private _scoreBar;
 
   constructor() {
     this._container = new window.PIXI.Container()
@@ -42,7 +44,19 @@ export class GameScene {
   }
 
   private initScene() {
-    scoreBar(this._container);
+    this._scoreBar = new ScoreBar();
+    this._container.addChild(this._scoreBar.container);
+    let interval = setInterval(() => {
+      if (window.countTime > 0 && window.stopGame === false) {
+        window.countTime--
+        this._scoreBar.update(window.countTime, window.scoreCount);
+        showMoles(window.countTime, this._container);
+      }
+      if (window.countTime === 0) {
+        clearInterval(interval);
+      }
+    }, 1000);
+    // this._scoreBar(this._container);
     hole(this._holes, this._container);
   }
 }
