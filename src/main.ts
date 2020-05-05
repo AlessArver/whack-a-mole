@@ -19,6 +19,10 @@ class Game {
   }
   private _app;
 
+  private _startScene;
+  private _gameScene;
+  private _endScene;
+
   constructor() {
     this._app = new PIXI.Application({
       autoDensity: true,
@@ -39,29 +43,29 @@ class Game {
       .add("../assets/imgs/moles.png")
       .add("../assets/imgs/moles_dead.png")
       .load(() => {
-        this.scenesSettings();
+        this._startScene = new StartScene();
+        this._gameScene = new GameScene();
+        this._endScene = new EndScene()
 
-        let start = new StartScene();
-        let gameScene = new GameScene();
-        let endScene = new EndScene()
+        this.scenesSettings();
       });
   }
 
   private scenesSettings () {
-    window.startSceneContainer.visible = true;
-    window.app.stage.addChild(window.startSceneContainer);
-  
+    this._startScene.container.visible = true
+    window.app.stage.addChild(this._startScene.container);
+
     const endOfTheGame = (): void => {
       setInterval(() => {
         if (window.countTime === 0) {
           window.gameSceneContainer.visible = false;
           window.app.stage.removeChild(window.gameSceneContainer);
-  
+
           window.endSceneContainer.visible = true;
           window.app.stage.addChild(window.endSceneContainer);
-  
+
           window.stopGame = true;
-  
+
           gameSceneBackgroundSound.stop()
         }
       }, 1000);
@@ -69,21 +73,21 @@ class Game {
     endOfTheGame();
   };
 
-  private resize() { 
+  private resize = () => {
     const scaleFactor = Math.min(
       window.innerWidth / logicalWidth,
       window.innerHeight / logicalHeight
     );
     const newWidth: number = Math.ceil(logicalWidth * scaleFactor);
     const newHeight: number = Math.ceil(logicalHeight * scaleFactor);
-  
+
     this._app.view.style.width = `${newWidth}px`;
     this._app.view.style.height = `${newHeight}px`;
-  
+
     this._app.view.width = newWidth;
     this._app.view.height = newHeight;
-  
-    this._app.resize(/*newWidth, newHeight*/);
+
+    this._app.resize(newWidth, newHeight);
   }
 
   private initCanvasStyles() {
@@ -102,7 +106,6 @@ declare global {
     loader: any;
     renderer: any;
 
-    startSceneContainer: any;
     gameSceneContainer: any;
     endSceneContainer: any;
 
@@ -121,7 +124,6 @@ window.PIXI = PIXI;
 window.loader = new PIXI.Loader();
 window.renderer = new PIXI.Renderer();
 
-window.startSceneContainer = new window.PIXI.Container();
 window.gameSceneContainer = new window.PIXI.Container();
 window.endSceneContainer = new window.PIXI.Container();
 

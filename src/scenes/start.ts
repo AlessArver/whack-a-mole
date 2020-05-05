@@ -3,12 +3,13 @@ import {buttonClickSound, gameSceneBackgroundSound} from "../sounds";
 export class StartScene {
   private _data = {
     beginFill: 0xffffff,
-  
+
     buttonTextColor: 0x000000,
     buttonTextMouseOver: 0xffffff
   }
   private _style;
   private _startButton;
+  private _container;
 
   constructor() {
     this._style = new window.PIXI.TextStyle({
@@ -16,8 +17,13 @@ export class StartScene {
       fontSize: 50,
       align: "center",
     });
-    
+
+    this._container = new window.PIXI.Container();
     this.createShowButton();
+  }
+
+  get container() {
+    return this._container;
   }
 
   private _startMouseover = (e) => {
@@ -34,8 +40,8 @@ export class StartScene {
     buttonClickSound.play()
 
     setTimeout(() => {
-      window.startSceneContainer.visible = false;
-      window.app.stage.removeChild(window.startSceneContainer);
+      this._container.visible = false;
+      window.app.stage.removeChild(this._container);
 
       window.gameSceneContainer.visible = true;
       window.app.stage.addChild(window.gameSceneContainer);
@@ -71,7 +77,7 @@ export class StartScene {
 
     startButton.addChild(buttonText);
     this._startButton = startButton;
-    window.startSceneContainer.addChild(this._startButton);
+    this._container.addChild(this._startButton);
 
     const animate = () => {
       requestAnimationFrame(animate);
