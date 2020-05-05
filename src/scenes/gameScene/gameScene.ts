@@ -52,7 +52,7 @@ export class GameScene {
         clearInterval(interval);
       }
     }, 1000);
-    
+
     const holesPositions = [0, 97, 194, 291, 388];
     for (let index = 0; index < 5; index++) {
       let hole = new Hole({ x: holesPositions[index] });
