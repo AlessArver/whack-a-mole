@@ -61,8 +61,8 @@ class Game {
           window.gameSceneContainer.visible = false;
           window.app.stage.removeChild(window.gameSceneContainer);
 
-          window.endSceneContainer.visible = true;
-          window.app.stage.addChild(window.endSceneContainer);
+          this._endScene.container.visible = true;
+          window.app.stage.addChild(this._endScene.container);
 
           window.stopGame = true;
 
@@ -107,7 +107,6 @@ declare global {
     renderer: any;
 
     gameSceneContainer: any;
-    endSceneContainer: any;
 
     countTime: number;
     scoreCount: number;
@@ -125,7 +124,6 @@ window.loader = new PIXI.Loader();
 window.renderer = new PIXI.Renderer();
 
 window.gameSceneContainer = new window.PIXI.Container();
-window.endSceneContainer = new window.PIXI.Container();
 
 window.countTime = 120;
 window.scoreCount = 0;

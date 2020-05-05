@@ -3,29 +3,33 @@ import {
 } from "../sounds";
 
 export class EndScene {
+  private _container
+
   constructor() {
+    this._container = new window.PIXI.Container();
+
     let text = new window.PIXI.Text("The End!");
     text.position.set(0, 0);
-    window.endSceneContainer.addChild(text);
+    this._container.addChild(text);
 
     let score = new window.PIXI.Text(`Score: ${window.scoreCount}`);
     score.position.set(0, 50);
-    window.endSceneContainer.addChild(score);
+    this._container.addChild(score);
 
     let hitMole = new window.PIXI.Text(`Hit: ${window.hitMoleCount}`);
     hitMole.position.set(0, 100);
-    window.endSceneContainer.addChild(hitMole);
+    this._container.addChild(hitMole);
 
     let missesMole = new window.PIXI.Text(`Misses: ${window.missesCount}`);
     missesMole.position.set(0, 150);
-    window.endSceneContainer.addChild(missesMole);
-    
+    this._container.addChild(missesMole);
+
     let tryAgain = new window.PIXI.Text("Try again");
     tryAgain.position.set(0, 250);
 
     tryAgain.interactive = true;
     tryAgain.on("mousedown", this._onmousedownTryAgain);
-    window.endSceneContainer.addChild(tryAgain);
+    this._container.addChild(tryAgain);
 
     setInterval(() => {
       score.text = `Score: ${window.scoreCount}`;
@@ -36,9 +40,13 @@ export class EndScene {
     this._resize()
   }
 
+  get container() {
+    return this._container
+  }
+
   private _onmousedownTryAgain = () => {
-    window.endSceneContainer.visible = false;
-    window.app.stage.removeChild(window.endSceneContainer);
+    this._container.visible = false;
+    window.app.stage.removeChild(this._container);
 
     window.app.stage.addChild(window.gameSceneContainer);
     window.gameSceneContainer.visible = true;
@@ -54,9 +62,9 @@ export class EndScene {
   private _resize() {
     setInterval(
       () =>
-      window.endSceneContainer.position.set(
-        (window.app.view.width - window.endSceneContainer.width) / 2,
-        (window.app.view.height - window.endSceneContainer.height) / 2
+      this._container.position.set(
+        (window.app.view.width - this._container.width) / 2,
+        (window.app.view.height - this._container.height) / 2
       ),
       1000
     );
