@@ -4,7 +4,7 @@ let holes = [[], [], [], [], []];
 
 type MoleOptions = {
   holeIndex: number;
-};
+}
 
 class Mole {
   protected _coordinates: Array<number>;
