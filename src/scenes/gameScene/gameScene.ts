@@ -1,6 +1,7 @@
 import { Hole } from "./hole";
 import { ScoreBar } from "./scoreBar";
 import { showMoles } from "./mole/mole";
+import { MoleController } from "./mole/moleController";
 
 export class GameScene {
   private _holesContainer;
@@ -10,8 +11,8 @@ export class GameScene {
   private _holes = [];
 
   constructor() {
-    this._container = new window.PIXI.Container()
-    this._holesContainer = new window.PIXI.Container()
+    this._container = new window.PIXI.Container();
+    this._holesContainer = new window.PIXI.Container();
 
     this._whiteBackground = new window.PIXI.Graphics();
     this._whiteBackground.beginFill(0xffffff);
@@ -29,11 +30,11 @@ export class GameScene {
   }
 
   get container() {
-    return this._container
+    return this._container;
   }
 
   public resize(width: number, height: number) {
-    this._whiteBackground.y = (height - this._whiteBackground.height) + 50;
+    this._whiteBackground.y = height - this._whiteBackground.height + 50;
     this._holesContainer.x = (width - this._holesContainer.width) / 2;
     this._scoreBar.resize(width, height);
     this._holes.forEach((hole: Hole) => hole.resize(width, height));
@@ -44,9 +45,14 @@ export class GameScene {
     this._container.addChild(this._scoreBar.container);
     let interval = setInterval(() => {
       if (window.countTime > 0 && window.stopGame === false) {
-        window.countTime--
+        window.countTime--;
         this._scoreBar.update(window.countTime, window.scoreCount);
-        showMoles(window.countTime, this._container);
+        let mole = new MoleController({
+          currentTime: window.countTime,
+          gameSceneContainer: this._container,
+        });
+        mole.showMoles()
+        // showMoles(window.countTime, this._container);
       }
       if (window.countTime === 0) {
         clearInterval(interval);

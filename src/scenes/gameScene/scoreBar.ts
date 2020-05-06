@@ -1,4 +1,3 @@
-import { showMoles } from "./mole/mole";
 import { gameSceneBackgroundSound } from "../../sounds";
 
 export class ScoreBar {

@@ -4,7 +4,7 @@ let holes = [[], [], [], [], []];
 
 type MoleOptions = {
   holeIndex: number;
-}
+};
 
 class Mole {
   protected _coordinates: Array<number>;
@@ -19,6 +19,8 @@ class Mole {
   protected _scoreCount;
 
   protected _moles;
+
+  public simpleMole;
 
   constructor(options: MoleOptions) {
     this._texture = window.loader.resources["../assets/imgs/moles.png"].texture;
@@ -96,7 +98,7 @@ class Mole {
     }
   }
 
-  private _mouseDown(e) {
+  private _mouseDown = (e) => {
     this._deadMoleTexture.frame = this._deadMoleRectangle;
     e.target.texture = this._deadMoleTexture;
 
@@ -127,26 +129,28 @@ class Mole {
   }
 }
 
-class SimpleMole extends Mole {
+export class SimpleMole extends Mole {
   constructor(options: MoleOptions) {
     super(options);
     this._coordinates = [-190, -100, 0, 100, 195];
     this._rectangle = new window.PIXI.Rectangle(0, 0, 60, 150);
     this._scoreCount = 5;
+    this.simpleMole = true;
   }
 }
 
-class StrongMole extends Mole {
+export class StrongMole extends Mole {
   constructor(options: MoleOptions) {
     super(options);
     this._coordinates = [-195, -95, 0, 95, 195];
     this._rectangle = new window.PIXI.Rectangle(60, 0, 70, 150);
     this._scoreCount = 15;
+    this.simpleMole = false;
   }
 }
 
 const choiceAndCreateMole = (container) => {
-  let selectMole = Math.floor(Math.random() * 2)
+  let selectMole = Math.floor(Math.random() * 2);
 
   switch (selectMole) {
     case 0: {
