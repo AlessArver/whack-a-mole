@@ -1,39 +1,45 @@
 import { hitMoleSound } from "../../../sounds";
 
-let holes = [[], [], [], [], []];
+let holes: Array<any> = [[], [], [], [], []];
 
 type MoleOptions = {
   holeIndex: number;
 };
+type MoleDataOptions = {
+  texture: any;
+  deadMoleTexture: any;
+  deadMoleRectangle: any;
+};
+type MoleCoordsOptions = {
+  y: number;
+};
 
 class Mole {
+  private _data: MoleDataOptions = {
+    texture: window.loader.resources["../assets/imgs/moles.png"].texture,
+    deadMoleTexture:
+      window.loader.resources["../assets/imgs/moles_dead.png"].texture,
+    deadMoleRectangle: new window.PIXI.Rectangle(0, 0, 60, 150),
+  };
+
   protected _coordinates: Array<number>;
-  protected _texture;
-  protected _deadMoleTexture;
 
-  protected _rectangle;
-  protected _deadMoleRectangle;
+  protected _rectangle: any;
 
-  protected _moleX;
-  protected _holeIndex;
-  protected _scoreCount;
+  protected _moleX: number;
+  protected _holeIndex: number;
+  protected _scoreCount: number;
 
-  protected _moles;
-
-  public simpleMole;
+  protected _moles: any;
+  public simpleMole: any;
 
   constructor(options: MoleOptions) {
-    this._texture = window.loader.resources["../assets/imgs/moles.png"].texture;
-    this._deadMoleTexture =
-      window.loader.resources["../assets/imgs/moles_dead.png"].texture;
-
     this._holeIndex = options.holeIndex;
-    this._deadMoleRectangle = new window.PIXI.Rectangle(0, 0, 60, 150);
 
     this.createMoleContainer();
   }
 
-  protected createMoleContainer() {
+  protected createMoleContainer(): void {
     this._moles = new window.PIXI.Container();
     this._moles.width = 388;
     this._moles.x = (window.app.view.width - this._moles.width) / 2;
@@ -43,7 +49,7 @@ class Mole {
     );
   }
 
-  private _addMoleInHole(mole, container) {
+  private _addMoleInHole(mole, container): void {
     for (let i = 0; i < 5; i++) {
       if (this._moleX === this._coordinates[i] && !holes[i].length) {
         holes[i].push(mole);
@@ -55,23 +61,27 @@ class Mole {
     }
   }
 
-  private _animationUp(mole) {
-    let coords = { y: window.app.view.height - mole.height - 50 };
-    let tween = new window.TWEEN.Tween(coords)
+  private _animationUp(mole): void {
+    let coords: MoleCoordsOptions = {
+      y: window.app.view.height - mole.height - 50,
+    };
+    let tween: any = new window.TWEEN.Tween(coords)
       .to({ y: coords.y }, 1000)
-      .onUpdate(function () {
+      .onUpdate((): void => {
         mole.y = coords.y;
       });
     tween.start();
   }
-  private _moleDown(array, mole, isMoleDown) {
-    let coords = { y: window.app.view.height - mole.height + 80 };
-    let tween = new window.TWEEN.Tween(coords)
+  private _moleDown(array, mole, isMoleDown): void {
+    let coords: MoleCoordsOptions = {
+      y: window.app.view.height - mole.height + 80,
+    };
+    let tween: any = new window.TWEEN.Tween(coords)
       .to({ y: coords.y }, 500)
-      .onUpdate(() => {
+      .onUpdate((): void => {
         mole.y = coords.y;
       })
-      .onComplete(() => {
+      .onComplete((): void => {
         array.pop();
         this._moles.removeChild(mole);
 
@@ -82,7 +92,7 @@ class Mole {
       });
     tween.start();
   }
-  private _animationDown(mole, isMoleDown) {
+  private _animationDown(mole, isMoleDown): void {
     if (isMoleDown && mole) {
       for (let i = 0; i < 5; i++) {
         if (this._moleX === this._coordinates[i] && holes[i].length)
@@ -98,26 +108,26 @@ class Mole {
     }
   }
 
-  private _mouseDown = (e) => {
-    this._deadMoleTexture.frame = this._deadMoleRectangle;
-    e.target.texture = this._deadMoleTexture;
+  private _mouseDown = (e): void => {
+    this._data.deadMoleTexture.frame = this._data.deadMoleRectangle;
+    e.target.texture = this._data.deadMoleTexture;
 
     window.scoreCount += this._scoreCount;
 
     hitMoleSound.play();
 
     this._animationDown(e.target, true);
-  }
-  private _removeMole(mole) {
+  };
+  private _removeMole(mole): void {
     setTimeout(() => {
       this._animationDown(mole, false);
     }, 3000);
   }
 
-  public create(container) {
-    this._texture.frame = this._rectangle;
+  public create(container): void {
+    this._data.texture.frame = this._rectangle;
     this._moleX = this._coordinates[this._holeIndex];
-    let mole = new window.PIXI.Sprite(this._texture);
+    let mole: any = new window.PIXI.Sprite(this._data.texture);
     mole.position.set(this._moleX, window.app.view.height - mole.height - 50);
 
     mole.interactive = true;
@@ -148,55 +158,3 @@ export class StrongMole extends Mole {
     this.simpleMole = false;
   }
 }
-
-const choiceAndCreateMole = (container) => {
-  let selectMole = Math.floor(Math.random() * 2);
-
-  switch (selectMole) {
-    case 0: {
-      let mole = new SimpleMole({
-        holeIndex: Math.floor(Math.random() * 5),
-      });
-      mole.create(container);
-      break;
-    }
-    case 1: {
-      let mole = new StrongMole({
-        holeIndex: Math.floor(Math.random() * 5),
-      });
-      mole.create(container);
-      break;
-    }
-  }
-};
-
-const createAndRemoveMole = (container) => {
-  setInterval(() => {
-    if (window.stopGame === false) {
-      choiceAndCreateMole(container);
-    }
-  }, 5000);
-};
-
-export const showMoles = (currentTime, container) => {
-  switch (currentTime) {
-    case 119:
-      console.log(`FIRST IF. Current time: ${currentTime}.`);
-      createAndRemoveMole(container);
-      break;
-    case 75:
-      console.log(`SECOND IF. Current time: ${currentTime}.`);
-      createAndRemoveMole(container);
-      createAndRemoveMole(container);
-      createAndRemoveMole(container);
-      break;
-    case 0:
-      console.log(`THIRD IF. Current time: ${currentTime}.`);
-      createAndRemoveMole(container);
-      createAndRemoveMole(container);
-      createAndRemoveMole(container);
-      createAndRemoveMole(container);
-      createAndRemoveMole(container);
-      break;
-  }
-};

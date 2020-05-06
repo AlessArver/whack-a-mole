@@ -1,18 +1,12 @@
-import {
-  gameSceneBackgroundSound
-} from "../sounds";
-
-type EndSceneOptions = {
-  onTryAgain: () => void
-}
+import {EndSceneOptions} from "../types/types";
 
 export class EndScene {
   private _container;
   private _onTryAgainCallback;
 
   constructor(options: EndSceneOptions) {
+    this._container = options.container;
     this._onTryAgainCallback = options.onTryAgain;
-    this._container = new window.PIXI.Container();
 
     let text = new window.PIXI.Text("The End!");
     text.position.set(0, 0);
@@ -42,16 +36,5 @@ export class EndScene {
       hitMole.text = `Hit: ${window.hitMoleCount}`;
       missesMole.text = `Misses: ${window.missesCount}`;
     }, 1000);
-  }
-
-  get container() {
-    return this._container
-  }
-
-  public resize(width: number, height: number) {
-    this._container.position.set(
-      (width - this._container.width) / 2,
-      (height - this._container.height) / 2
-    );
   }
 }

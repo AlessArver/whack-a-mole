@@ -1,13 +1,16 @@
 import { gameSceneBackgroundSound } from "../../sounds";
 
-export class ScoreBar {
-  private _container;
-  private _timer;
-  private _score;
+type ScoreBarOptions = {
+  container: any
+}
 
-  constructor() {
-    this._container = new window.PIXI.Container();
-    this._container.width = 234;
+export class ScoreBar {
+  private _container: any;
+  private _timer: any;
+  private _score: any;
+
+  constructor(options: ScoreBarOptions) {
+    this._container = options.container
 
     this._score = new window.PIXI.Text(`Score: ${window.scoreCount}`);
     this._score.position.set(0, 0);
@@ -20,17 +23,9 @@ export class ScoreBar {
     this._createStopButton();
   }
 
-  get container() {
-    return this._container;
-  }
-
   public update(countTime: number, scoreCount: number) {
     this._timer.text = `Timer: ${countTime}s`;
     this._score.text = `Score: ${scoreCount}`;
-  }
-
-  public resize = (width: number, height: number) => {
-      this._container.position.set((width - this._container.width) / 2, 0)
   }
 
   private _stopButtonMousedown = (e) => {

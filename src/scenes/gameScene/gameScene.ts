@@ -1,58 +1,61 @@
 import { Hole } from "./hole";
 import { ScoreBar } from "./scoreBar";
-import { showMoles } from "./mole/mole";
 import { MoleController } from "./mole/moleController";
 
+type GameSceneOptions = {
+  container: any;
+};
+type GameSceneDataOptions = {
+  scoreBarContainer: any;
+  holesContainer: any;
+  whiteBackground: any;
+  holes: Array<any>;
+};
+
 export class GameScene {
-  private _holesContainer;
-  private _whiteBackground;
-  private _container;
-  private _scoreBar;
-  private _holes = [];
+  private _data: GameSceneDataOptions = {
+    scoreBarContainer: new window.PIXI.Container(),
+    holesContainer: new window.PIXI.Container(),
+    whiteBackground: new window.PIXI.Graphics(),
+    holes: [],
+  };
+  private _container: any;
+  private _grass;
 
-  constructor() {
-    this._container = new window.PIXI.Container();
-    this._holesContainer = new window.PIXI.Container();
+  constructor(options: GameSceneOptions) {
+    this._container = options.container;
+    this._data.whiteBackground.beginFill(0xffffff);
+    this._data.whiteBackground.drawRect(0, 0, window.app.view.width, 100);
+    this._data.whiteBackground.endFill();
 
-    this._whiteBackground = new window.PIXI.Graphics();
-    this._whiteBackground.beginFill(0xffffff);
-    this._whiteBackground.drawRect(0, 0, window.app.view.width, 100);
-    this._whiteBackground.endFill();
-
-    this._container.addChild(this._whiteBackground);
+    this._container.addChild(this._data.whiteBackground);
 
     this._container.sortableChildren = true;
 
-    this._holesContainer.zIndex = 2;
-    this._whiteBackground.zIndex = 1;
+    this._data.holesContainer.zIndex = 2;
+    this._data.whiteBackground.zIndex = 1;
 
     this.initScene();
   }
 
-  get container() {
-    return this._container;
+  get gameSceneData(): any {
+    return this._data;
   }
 
-  public resize(width: number, height: number) {
-    this._whiteBackground.y = height - this._whiteBackground.height + 50;
-    this._holesContainer.x = (width - this._holesContainer.width) / 2;
-    this._scoreBar.resize(width, height);
-    this._holes.forEach((hole: Hole) => hole.resize(width, height));
-  }
-
-  private initScene() {
-    this._scoreBar = new ScoreBar();
-    this._container.addChild(this._scoreBar.container);
-    let interval = setInterval(() => {
+  private initScene(): void {
+    let scoreBar: any = new ScoreBar({
+      container: this._data.scoreBarContainer,
+    });
+    this._container.addChild(this._data.scoreBarContainer);
+    let interval: any = setInterval((): void => {
       if (window.countTime > 0 && window.stopGame === false) {
         window.countTime--;
-        this._scoreBar.update(window.countTime, window.scoreCount);
-        let mole = new MoleController({
+        scoreBar.update(window.countTime, window.scoreCount);
+        let mole: any = new MoleController({
           currentTime: window.countTime,
           gameSceneContainer: this._container,
         });
-        mole.showMoles()
-        // showMoles(window.countTime, this._container);
+        mole.showMoles();
       }
       if (window.countTime === 0) {
         clearInterval(interval);
@@ -61,10 +64,16 @@ export class GameScene {
 
     const holesPositions = [0, 97, 194, 291, 388];
     for (let index = 0; index < 5; index++) {
-      let hole = new Hole({ x: holesPositions[index] });
-      this._holes.push(hole);
-      this._holesContainer.addChild(hole.grass);
+      let hole: any = new Hole({ x: holesPositions[index] });
+      this._data.holes.push(hole);
+      this._data.holesContainer.addChild(hole.grass);
+
+      this._grass = hole.grass;
     }
-    this._container.addChild(this._holesContainer);
+    this._container.addChild(this._data.holesContainer);
+  }
+
+  get grass(): any {
+    return this._grass;
   }
 }
