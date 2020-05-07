@@ -1,7 +1,7 @@
 import { Hole } from "./hole";
 import { ScoreBar } from "./scoreBar";
 import { MoleController } from "./mole/moleController";
-import {GameSceneDataOptions} from "../../types/types";
+import { GameSceneDataOptions } from "../../types/types";
 
 type GameSceneOptions = {
   container: any;
@@ -16,6 +16,7 @@ export class GameScene {
   };
   private _container: any;
   private _grass;
+  private _moles;
 
   constructor(options: GameSceneOptions) {
     this._container = options.container;
@@ -66,6 +67,11 @@ export class GameScene {
       this._grass = hole.grass;
     }
     this._container.addChild(this._data.holesContainer);
+  }
+
+  private _resize() {
+    if (this._moles)
+      this._moles.x = (window.app.view.width - this._moles.width) / 2;
   }
 
   get grass(): any {

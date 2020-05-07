@@ -4,8 +4,19 @@ import { GameScene } from "./scenes/gameScene/gameScene";
 import { StartScene } from "./scenes/start";
 import { EndScene } from "./scenes/endScene";
 import { gameSceneBackgroundSound } from "./sounds";
-import { MainDataOptions } from "./types/types";
 import { Hole } from "./scenes/gameScene/hole";
+import { ScenesSettings } from "./scenes/scenesSettings";
+
+type MainDataOptions = {
+  startSceneContainer: any;
+  gameSceneContainer: any;
+  endSceneContainer: any;
+  countTime: number;
+  scoreCount: number;
+  hitMoleCount: number;
+  missesCount: number;
+  stopGame: boolean;
+};
 
 // Responsive app
 const logicalWidth: number = 320;
@@ -13,6 +24,9 @@ const logicalHeight: number = 240;
 
 class Game {
   private _data: MainDataOptions = {
+    startSceneContainer: new PIXI.Container(),
+    gameSceneContainer: new PIXI.Container(),
+    endSceneContainer: new PIXI.Container(),
     countTime: 120,
     scoreCount: 0,
     hitMoleCount: 0,
@@ -25,9 +39,7 @@ class Game {
   private _gameScene: any;
   private _endScene: any;
 
-  private _startSceneContainer: any;
-  private _gameSceneContainer: any;
-  private _endSceneContainer: any;
+  private _sceneSettings: any;
 
   constructor() {
     this._app = new PIXI.Application({
@@ -36,9 +48,9 @@ class Game {
     });
     window.app = this._app;
     document.body.appendChild(this._app.view);
-    this._startSceneContainer = new PIXI.Container();
-    this._gameSceneContainer = new PIXI.Container();
-    this._endSceneContainer = new PIXI.Container();
+    this._data.startSceneContainer = new PIXI.Container();
+    this._data.gameSceneContainer = new PIXI.Container();
+    this._data.endSceneContainer = new PIXI.Container();
     window.addEventListener("resize", this.resize);
     this.initCanvasStyles();
     this.setup();
@@ -51,50 +63,35 @@ class Game {
       .add("../assets/imgs/moles_dead.png")
       .load((): void => {
         this._startScene = new StartScene({
-          container: this._startSceneContainer,
+          container: this._data.startSceneContainer,
           onGameStart: this._startGame,
         });
         this._gameScene = new GameScene({
-          container: this._gameSceneContainer,
+          container: this._data.gameSceneContainer,
         });
         this._endScene = new EndScene({
-          container: this._endSceneContainer,
+          container: this._data.endSceneContainer,
           onTryAgain: this.tryAgain,
         });
 
-        this.scenesSettings();
+        this._sceneSettings = new ScenesSettings({
+          app: this._app,
+          gameScene: this._gameScene,
+          startSceneContainer: this._data.startSceneContainer,
+          gameSceneContainer: this._data.gameSceneContainer,
+          endSceneContainer: this._data.endSceneContainer,
+        });
+        this._sceneSettings.endOfTheGame();
         this.resize();
       });
   }
 
-  private scenesSettings(): void {
-    this._startSceneContainer.visible = true;
-    window.app.stage.addChild(this._startSceneContainer);
-
-    const endOfTheGame = (): void => {
-      setInterval((): void => {
-        if (window.countTime === 0) {
-          this._gameSceneContainer.visible = false;
-          window.app.stage.removeChild(this._gameSceneContainer);
-
-          this._endSceneContainer.visible = true;
-          window.app.stage.addChild(this._endSceneContainer);
-
-          window.stopGame = true;
-
-          gameSceneBackgroundSound.stop();
-        }
-      }, 1000);
-    };
-    endOfTheGame();
-  }
-
   private tryAgain = (): void => {
-    this._endSceneContainer.visible = false;
-    window.app.stage.removeChild(this._endSceneContainer);
+    this._data.endSceneContainer.visible = false;
+    this._app.stage.removeChild(this._data.endSceneContainer);
 
-    window.app.stage.addChild(this._gameSceneContainer);
-    this._gameSceneContainer.visible = true;
+    this._app.stage.addChild(this._data.gameSceneContainer);
+    this._data.gameSceneContainer.visible = true;
 
     window.stopGame = false;
     window.countTime = 120;
@@ -105,11 +102,11 @@ class Game {
   };
 
   private _startGame = (): void => {
-    this._startSceneContainer.visible = false;
-    window.app.stage.removeChild(this._startSceneContainer);
+    this._data.startSceneContainer.visible = false;
+    this._app.stage.removeChild(this._data.startSceneContainer);
 
-    this._gameSceneContainer.visible = true;
-    window.app.stage.addChild(this._gameSceneContainer);
+    this._data.gameSceneContainer.visible = true;
+    this._app.stage.addChild(this._data.gameSceneContainer);
 
     window.stopGame = false;
     gameSceneBackgroundSound.play();
@@ -131,26 +128,7 @@ class Game {
 
     this._app.resize(newWidth, newHeight);
 
-    this._startSceneContainer.position.set(
-      (newWidth - this._startSceneContainer.width) / 2,
-      (newHeight - this._startSceneContainer.height) / 2
-    );
-
-    this._gameScene.gameSceneData.whiteBackground.y =
-      newHeight - this._gameScene.gameSceneData.whiteBackground.height + 50;
-    this._gameScene.gameSceneData.holesContainer.x =
-      (newWidth - this._gameScene.gameSceneData.holesContainer.width) / 2;
-    this._gameScene.gameSceneData.scoreBarContainer.x =
-      (newWidth - this._gameScene.gameSceneData.scoreBarContainer.width) / 2;
-    this._gameScene.gameSceneData.holes.forEach(
-      (hole: Hole) =>
-        (hole.grass.y = newHeight - this._gameScene.grass.height - 50)
-    );
-
-    this._endSceneContainer.position.set(
-      (newWidth - this._endSceneContainer.width) / 2,
-      (newHeight - this._endSceneContainer.height) / 2
-    );
+    this._sceneSettings.resize(newWidth, newHeight);
   };
 
   private initCanvasStyles(): void {

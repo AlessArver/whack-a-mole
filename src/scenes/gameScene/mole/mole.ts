@@ -41,6 +41,9 @@ class Mole {
       100
     );
   }
+  get moles() {
+    return this._moles
+  }
 
   private _addMoleInHole(mole, container): void {
     for (let i = 0; i < 5; i++) {

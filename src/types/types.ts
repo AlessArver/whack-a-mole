@@ -1,4 +1,6 @@
 export type MainDataOptions = {
+  gameSceneContainer: any;
+  endSceneContainer: any;
   countTime: number;
   scoreCount: number;
   hitMoleCount: number;
@@ -15,7 +17,6 @@ export type StartSceneDataOptions = {
   buttonTextColor: number;
   buttonTextMouseOver: number;
 };
-
 
 export type GameSceneOptions = {
   container: any;

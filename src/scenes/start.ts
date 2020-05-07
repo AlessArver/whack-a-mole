@@ -42,7 +42,6 @@ export class StartScene {
     }, 500);
   };
 
-
   private _createShowButton() {
     const buttonText: any = new window.PIXI.Text("Start", this._style);
 
