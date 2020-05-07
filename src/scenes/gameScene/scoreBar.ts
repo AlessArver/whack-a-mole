@@ -1,8 +1,5 @@
 import { gameSceneBackgroundSound } from "../../sounds";
-
-type ScoreBarOptions = {
-  container: any
-}
+import {ScoreBarOptions} from "../../types/types";
 
 export class ScoreBar {
   private _container: any;

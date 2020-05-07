@@ -16,6 +16,10 @@ export type StartSceneDataOptions = {
   buttonTextMouseOver: number;
 };
 
+
+export type GameSceneOptions = {
+  container: any;
+};
 export type GameSceneDataOptions = {
   scoreBarContainer: any;
   holesContainer: any;
@@ -37,6 +41,10 @@ export type MoleDataOptions = {
   deadMoleTexture: any;
   deadMoleRectangle: any;
 };
+export type MoleCoordsOptions = {
+  y: number;
+};
+
 export type MoleControllerOptions = {
   currentTime: number;
   gameSceneContainer: any;

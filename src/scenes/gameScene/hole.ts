@@ -1,6 +1,4 @@
-type HoleOptions = {
-  x: number;
-};
+import {HoleOptions} from "../../types/types";
 
 export class Hole {
   private _texture: any;

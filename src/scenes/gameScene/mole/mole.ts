@@ -1,15 +1,8 @@
 import { hitMoleSound } from "../../../sounds";
+import { MoleDataOptions, MoleOptions} from "../../../types/types";
 
 let holes: Array<any> = [[], [], [], [], []];
 
-type MoleOptions = {
-  holeIndex: number;
-};
-type MoleDataOptions = {
-  texture: any;
-  deadMoleTexture: any;
-  deadMoleRectangle: any;
-};
 type MoleCoordsOptions = {
   y: number;
 };
@@ -129,6 +122,15 @@ class Mole {
     this._moleX = this._coordinates[this._holeIndex];
     let mole: any = new window.PIXI.Sprite(this._data.texture);
     mole.position.set(this._moleX, window.app.view.height - mole.height - 50);
+
+    setInterval(
+      () =>
+        mole.position.set(
+          this._moleX,
+          window.app.view.height - mole.height - 50
+        ),
+      500
+    );
 
     mole.interactive = true;
     this._animationUp(mole);

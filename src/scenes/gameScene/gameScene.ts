@@ -1,15 +1,10 @@
 import { Hole } from "./hole";
 import { ScoreBar } from "./scoreBar";
 import { MoleController } from "./mole/moleController";
+import {GameSceneDataOptions} from "../../types/types";
 
 type GameSceneOptions = {
   container: any;
-};
-type GameSceneDataOptions = {
-  scoreBarContainer: any;
-  holesContainer: any;
-  whiteBackground: any;
-  holes: Array<any>;
 };
 
 export class GameScene {

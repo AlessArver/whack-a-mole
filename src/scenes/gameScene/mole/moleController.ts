@@ -1,9 +1,5 @@
 import { SimpleMole, StrongMole } from "./mole";
-
-type MoleControllerOptions = {
-  currentTime: number;
-  gameSceneContainer: any;
-};
+import { MoleControllerOptions } from "../../../types/types";
 
 export class MoleController {
   protected _currentTime: number;
