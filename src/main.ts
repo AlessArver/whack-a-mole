@@ -8,6 +8,7 @@ import { Hole } from "./scenes/gameScene/hole";
 import { ScenesSettings } from "./scenes/scenesSettings";
 
 type MainDataOptions = {
+  TWEEN: any;
   startSceneContainer: any;
   gameSceneContainer: any;
   endSceneContainer: any;
@@ -24,6 +25,7 @@ const logicalHeight: number = 240;
 
 class Game {
   private _data: MainDataOptions = {
+    TWEEN: TWEEN,
     startSceneContainer: new PIXI.Container(),
     gameSceneContainer: new PIXI.Container(),
     endSceneContainer: new PIXI.Container(),
@@ -63,10 +65,12 @@ class Game {
       .add("../assets/imgs/moles_dead.png")
       .load((): void => {
         this._startScene = new StartScene({
+          app: this._app,
           container: this._data.startSceneContainer,
           onGameStart: this._startGame,
         });
         this._gameScene = new GameScene({
+          TWEEN: this._data.TWEEN,
           container: this._data.gameSceneContainer,
         });
         this._endScene = new EndScene({
@@ -132,9 +136,10 @@ class Game {
   };
 
   private initCanvasStyles(): void {
-    this._app.view.style.display = "block";
-    this._app.view.style.margin = "auto";
-    this._app.view.style.border = "5px solid black";
+    let appStyle = this._app.view.style;
+    appStyle.display = "block";
+    appStyle.margin = "auto";
+    appStyle.border = "5px solid black";
   }
 }
 declare global {

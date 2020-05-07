@@ -1,5 +1,10 @@
 import { hitMoleSound } from "../../../sounds";
-import { MoleDataOptions, MoleOptions} from "../../../types/types";
+import { MoleDataOptions } from "../../../types/types";
+
+type MoleOptions = {
+  TWEEN: any;
+  holeIndex: number;
+};
 
 let holes: Array<any> = [[], [], [], [], []];
 
@@ -20,13 +25,17 @@ class Mole {
   protected _rectangle: any;
 
   protected _moleX: number;
+
+  private _TWEEN: any;
   protected _holeIndex: number;
+
   protected _scoreCount: number;
 
   protected _moles: any;
   public simpleMole: any;
 
   constructor(options: MoleOptions) {
+    this._TWEEN = options.TWEEN;
     this._holeIndex = options.holeIndex;
 
     this.createMoleContainer();
@@ -42,7 +51,7 @@ class Mole {
     );
   }
   get moles() {
-    return this._moles
+    return this._moles;
   }
 
   private _addMoleInHole(mole, container): void {
@@ -61,7 +70,7 @@ class Mole {
     let coords: MoleCoordsOptions = {
       y: window.app.view.height - mole.height - 50,
     };
-    let tween: any = new window.TWEEN.Tween(coords)
+    let tween: any = new this._TWEEN.Tween(coords)
       .to({ y: coords.y }, 1000)
       .onUpdate((): void => {
         mole.y = coords.y;
@@ -72,7 +81,7 @@ class Mole {
     let coords: MoleCoordsOptions = {
       y: window.app.view.height - mole.height + 80,
     };
-    let tween: any = new window.TWEEN.Tween(coords)
+    let tween: any = new this._TWEEN.Tween(coords)
       .to({ y: coords.y }, 500)
       .onUpdate((): void => {
         mole.y = coords.y;
@@ -127,11 +136,7 @@ class Mole {
     mole.position.set(this._moleX, window.app.view.height - mole.height - 50);
 
     setInterval(
-      () =>
-        mole.position.set(
-          this._moleX,
-          window.app.view.height - mole.height - 50
-        ),
+      () => mole.position.set(this._moleX, window.app.view.height - mole.height - 50),
       500
     );
 

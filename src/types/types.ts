@@ -9,6 +9,7 @@ export type MainDataOptions = {
 };
 
 export type StartSceneOptions = {
+  app: any;
   container: any;
   onGameStart: () => void;
 };
@@ -35,6 +36,8 @@ export type HoleOptions = {
   x: number;
 };
 export type MoleOptions = {
+  appWidth: number;
+  appHeight: number;
   holeIndex: number;
 };
 export type MoleDataOptions = {
@@ -47,6 +50,8 @@ export type MoleCoordsOptions = {
 };
 
 export type MoleControllerOptions = {
+  appWidth: number;
+  appHeight: number;
   currentTime: number;
   gameSceneContainer: any;
 };

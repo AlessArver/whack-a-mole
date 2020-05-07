@@ -1,5 +1,5 @@
 import { gameSceneBackgroundSound } from "../../sounds";
-import {ScoreBarOptions} from "../../types/types";
+import { ScoreBarOptions } from "../../types/types";
 
 export class ScoreBar {
   private _container: any;
@@ -7,7 +7,7 @@ export class ScoreBar {
   private _score: any;
 
   constructor(options: ScoreBarOptions) {
-    this._container = options.container
+    this._container = options.container;
 
     this._score = new window.PIXI.Text(`Score: ${window.scoreCount}`);
     this._score.position.set(0, 0);

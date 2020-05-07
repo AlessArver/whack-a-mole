@@ -4,6 +4,7 @@ import { MoleController } from "./mole/moleController";
 import { GameSceneDataOptions } from "../../types/types";
 
 type GameSceneOptions = {
+  TWEEN: any;
   container: any;
 };
 
@@ -14,11 +15,13 @@ export class GameScene {
     whiteBackground: new window.PIXI.Graphics(),
     holes: [],
   };
+  private _TWEEN: any;
   private _container: any;
   private _grass;
   private _moles;
 
   constructor(options: GameSceneOptions) {
+    this._TWEEN = options.TWEEN;
     this._container = options.container;
     this._data.whiteBackground.beginFill(0xffffff);
     this._data.whiteBackground.drawRect(0, 0, window.app.view.width, 100);
@@ -48,6 +51,7 @@ export class GameScene {
         window.countTime--;
         scoreBar.update(window.countTime, window.scoreCount);
         let mole: any = new MoleController({
+          TWEEN: this._TWEEN,
           currentTime: window.countTime,
           gameSceneContainer: this._container,
         });
@@ -60,7 +64,10 @@ export class GameScene {
 
     const holesPositions = [0, 97, 194, 291, 388];
     for (let index = 0; index < 5; index++) {
-      let hole: any = new Hole({ x: holesPositions[index] });
+      let hole: any = new Hole({
+        appHeight: window.app.view.height,
+        x: holesPositions[index],
+      });
       this._data.holes.push(hole);
       this._data.holesContainer.addChild(hole.grass);
 

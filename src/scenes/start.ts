@@ -1,5 +1,11 @@
 import { buttonClickSound } from "../sounds";
-import {StartSceneDataOptions, StartSceneOptions} from "../types/types";
+import { StartSceneDataOptions } from "../types/types";
+
+type StartSceneOptions = {
+  app: any;
+  container: any;
+  onGameStart: () => void;
+};
 
 export class StartScene {
   private _data: StartSceneDataOptions = {
@@ -9,10 +15,12 @@ export class StartScene {
   };
   private _style: any;
   private _startButton: any;
+  public _app: any;
   private _container: any;
   private _onGameSceneCallback: any;
 
   constructor(options: StartSceneOptions) {
+    this._app = options.app;
     this._container = options.container;
     this._onGameSceneCallback = options.onGameStart;
     this._style = new window.PIXI.TextStyle({
@@ -64,7 +72,7 @@ export class StartScene {
 
     const animate = () => {
       requestAnimationFrame(animate);
-      window.app.render(this._startButton);
+      this._app.render(this._startButton);
     };
   }
 }
