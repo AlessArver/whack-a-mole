@@ -79,7 +79,7 @@ export class StartScene {
     };
   }
 
-  public resize(newWidth, newHeight) {
+  public resize(newWidth: number, newHeight: number) {
     this._container.position.set(
       (newWidth - this._container.width) / 2,
       (newHeight - this._container.height) / 2

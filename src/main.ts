@@ -66,7 +66,7 @@ class Game {
           app: this._app,
           gameSceneContainer: this._gameScene.container,
           startSceneContainer: this._startScene.container,
-          endSceneContainer: this._gameScene.container,
+          endSceneContainer: this._endScene.container,
         });
         this._sceneSettings.setStartScene();
         this._waitWhenGameToEnd();
@@ -77,6 +77,11 @@ class Game {
   private _waitWhenGameToEnd() {
     this._interval = setInterval(() => {
       if (window.countTime === 0) {
+        this._endScene.setGameEndData(
+          window.scoreCount, 
+          window.hitMoleCount, 
+          window.missesCount
+        );
         this._sceneSettings.setEndScene();
         
         window.stopGame = true;
@@ -93,6 +98,7 @@ class Game {
     window.stopGame = false;
     window.countTime = 120;
     window.scoreCount = 0;
+    window.hitMoleCount = 0;
     window.missesCount = 0;
 
     gameSceneBackgroundSound.play();
