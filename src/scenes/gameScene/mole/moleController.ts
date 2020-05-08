@@ -1,16 +1,14 @@
 import { SimpleMole, StrongMole } from "./mole";
 
 type MoleControllerOptions = {
-  currentTime: number;
   gameSceneContainer: any;
 };
 
 export class MoleController {
-  protected _currentTime: number;
   private _gameSceneContainer: any;
+  private _moles: Array<SimpleMole|StrongMole> = [];
 
   constructor(options: MoleControllerOptions) {
-    this._currentTime = options.currentTime;
     this._gameSceneContainer = options.gameSceneContainer;
   }
 
@@ -23,6 +21,7 @@ export class MoleController {
           holeIndex: Math.floor(Math.random() * 5),
         });
         mole.create(this._gameSceneContainer);
+        this._moles.push(mole);
         break;
       }
       case 1: {
@@ -30,9 +29,14 @@ export class MoleController {
           holeIndex: Math.floor(Math.random() * 5),
         });
         mole.create(this._gameSceneContainer);
+        this._moles.push(mole)
         break;
       }
     }
+  }
+
+  public resize(newWidth: number, newHeight: number) {
+    this._moles.forEach(mole => mole.resize(newWidth, newHeight))
   }
 
   private _createAndRemoveMole(): void {
@@ -43,25 +47,23 @@ export class MoleController {
     }, 3500);
   }
 
-  public showMoles(): void {
-    switch (this._currentTime) {
+  public showMoles(currentTime): void {
+    switch (currentTime) {
       case 119:
-        console.log(`FIRST IF. Current time: ${this._currentTime}.`);
+        console.log(`FIRST IF. Current time: ${currentTime}.`);
         this._createAndRemoveMole();
         break;
       case 75:
-        console.log(`SECOND IF. Current time: ${this._currentTime}.`);
-        this._createAndRemoveMole();
-        this._createAndRemoveMole();
-        this._createAndRemoveMole();
+        console.log(`SECOND IF. Current time: ${currentTime}.`);
+        for (let i = 1; i <= 3; i++) {
+          this._createAndRemoveMole();
+        }
         break;
       case 0:
-        console.log(`THIRD IF. Current time: ${this._currentTime}.`);
-        this._createAndRemoveMole();
-        this._createAndRemoveMole();
-        this._createAndRemoveMole();
-        this._createAndRemoveMole();
-        this._createAndRemoveMole();
+        console.log(`THIRD IF. Current time: ${currentTime}.`);
+        for (let i = 1; i <= 5; i++) {
+          this._createAndRemoveMole();
+        }
         break;
     }
   }

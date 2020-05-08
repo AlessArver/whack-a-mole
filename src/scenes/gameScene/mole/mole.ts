@@ -21,15 +21,10 @@ class Mole {
   };
 
   protected _coordinates: Array<number>;
-
   protected _rectangle: any;
-
   protected _moleX: number;
-
   protected _holeIndex: number;
-
   protected _scoreCount: number;
-
   protected _moles: any;
   public simpleMole: any;
 
@@ -43,13 +38,17 @@ class Mole {
     this._moles = new window.PIXI.Container();
     this._moles.width = 388;
     this._moles.x = (window.app.view.width - this._moles.width) / 2;
-    setInterval(
-      () => (this._moles.x = (window.app.view.width - this._moles.width) / 2),
-      100
-    );
+    // setInterval(
+    //   () => (this._moles.x = (window.app.view.width - this._moles.width) / 2),
+    //   100
+    // );
   }
   get moles() {
     return this._moles;
+  }
+
+  public resize(newWidth: number, newHeight: number) {
+    this._moles.x = (newWidth - this._moles.width) / 2
   }
 
   private _addMoleInHole(mole, container): void {
@@ -132,11 +131,6 @@ class Mole {
     this._moleX = this._coordinates[this._holeIndex];
     let mole: any = new window.PIXI.Sprite(this._data.texture);
     mole.position.set(this._moleX, window.app.view.height - mole.height - 50);
-
-    setInterval(
-      () => mole.position.set(this._moleX, window.app.view.height - mole.height - 50),
-      500
-    );
 
     mole.interactive = true;
     this._animationUp(mole);

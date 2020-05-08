@@ -11,8 +11,8 @@ export class GameScene {
     holes: [],
   };
   private _container: any;
-  private _grass;
-  private _moles;
+  private _grass: any;
+  private _moleController: any;
 
   constructor() {
     this._container = new PIXI.Container();
@@ -34,24 +34,19 @@ export class GameScene {
     return this._container;
   }
 
-  get gameSceneData(): any {
-    return this._data;
-  }
-
   private initScene(): void {
     let scoreBar: any = new ScoreBar({
       container: this._data.scoreBarContainer,
     });
     this._container.addChild(this._data.scoreBarContainer);
+    this._moleController = new MoleController({
+      gameSceneContainer: this._container,
+    });
     let interval: any = setInterval((): void => {
       if (window.countTime > 0 && window.stopGame === false) {
         window.countTime--;
         scoreBar.update(window.countTime, window.scoreCount);
-        let mole: any = new MoleController({
-          currentTime: window.countTime,
-          gameSceneContainer: this._container,
-        });
-        mole.showMoles();
+        this._moleController.showMoles(window.countTime);
       }
       if (window.countTime === 0) {
         clearInterval(interval);
@@ -72,7 +67,7 @@ export class GameScene {
     this._container.addChild(this._data.holesContainer);
   }
 
-  public resize(newWidth: number, newHeight) {
+  public resize(newWidth: number, newHeight: number) {
     this._data.whiteBackground.y = newHeight - this._data.whiteBackground.height + 50;
     this._data.holesContainer.x = (newWidth - this._data.holesContainer.width) / 2;
     this._data.scoreBarContainer.x = (newWidth - this._data.scoreBarContainer.width) / 2;
@@ -80,6 +75,8 @@ export class GameScene {
       (hole: Hole) =>
         (hole.grass.y = newHeight - this._grass.height - 50)
     );
+    this._moleController.resize()
+  
   }
 
   get grass(): any {
