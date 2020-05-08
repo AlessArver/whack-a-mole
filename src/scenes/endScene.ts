@@ -1,11 +1,13 @@
-import {EndSceneOptions} from "../types/types";
+type EndSceneOptions = {
+  onTryAgain: () => void;
+};
 
 export class EndScene {
   private _container;
   private _onTryAgainCallback;
 
   constructor(options: EndSceneOptions) {
-    this._container = options.container;
+    this._container = new PIXI.Container();
     this._onTryAgainCallback = options.onTryAgain;
 
     let text = new window.PIXI.Text("The End!");
@@ -36,5 +38,16 @@ export class EndScene {
       hitMole.text = `Hit: ${window.hitMoleCount}`;
       missesMole.text = `Misses: ${window.missesCount}`;
     }, 1000);
+  }
+
+  public get container(): PIXI.Container {
+    return this._container;
+  }
+
+  public resize(newWidth, newHeight) {
+    this._container.position.set(
+      (newWidth - this._container.width) / 2,
+      (newHeight - this._container.height) / 2
+    );
   }
 }

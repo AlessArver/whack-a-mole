@@ -4,14 +4,9 @@ import { GameScene } from "./scenes/gameScene/gameScene";
 import { StartScene } from "./scenes/start";
 import { EndScene } from "./scenes/endScene";
 import { gameSceneBackgroundSound } from "./sounds";
-import { Hole } from "./scenes/gameScene/hole";
 import { ScenesSettings } from "./scenes/scenesSettings";
 
 type MainDataOptions = {
-  TWEEN: any;
-  startSceneContainer: any;
-  gameSceneContainer: any;
-  endSceneContainer: any;
   countTime: number;
   scoreCount: number;
   hitMoleCount: number;
@@ -25,10 +20,6 @@ const logicalHeight: number = 240;
 
 class Game {
   private _data: MainDataOptions = {
-    TWEEN: TWEEN,
-    startSceneContainer: new PIXI.Container(),
-    gameSceneContainer: new PIXI.Container(),
-    endSceneContainer: new PIXI.Container(),
     countTime: 120,
     scoreCount: 0,
     hitMoleCount: 0,
@@ -37,6 +28,7 @@ class Game {
   };
   private _app: any;
 
+  private _interval: any;
   private _startScene: any;
   private _gameScene: any;
   private _endScene: any;
@@ -50,9 +42,6 @@ class Game {
     });
     window.app = this._app;
     document.body.appendChild(this._app.view);
-    this._data.startSceneContainer = new PIXI.Container();
-    this._data.gameSceneContainer = new PIXI.Container();
-    this._data.endSceneContainer = new PIXI.Container();
     window.addEventListener("resize", this.resize);
     this.initCanvasStyles();
     this.setup();
@@ -66,36 +55,40 @@ class Game {
       .load((): void => {
         this._startScene = new StartScene({
           app: this._app,
-          container: this._data.startSceneContainer,
           onGameStart: this._startGame,
         });
-        this._gameScene = new GameScene({
-          TWEEN: this._data.TWEEN,
-          container: this._data.gameSceneContainer,
-        });
+        this._gameScene = new GameScene();
         this._endScene = new EndScene({
-          container: this._data.endSceneContainer,
           onTryAgain: this.tryAgain,
         });
 
         this._sceneSettings = new ScenesSettings({
           app: this._app,
-          gameScene: this._gameScene,
-          startSceneContainer: this._data.startSceneContainer,
-          gameSceneContainer: this._data.gameSceneContainer,
-          endSceneContainer: this._data.endSceneContainer,
+          gameSceneContainer: this._gameScene.container,
+          startSceneContainer: this._startScene.container,
+          endSceneContainer: this._gameScene.container,
         });
-        this._sceneSettings.endOfTheGame();
+        this._sceneSettings.setStartScene();
+        this._waitWhenGameToEnd();
         this.resize();
       });
   }
 
-  private tryAgain = (): void => {
-    this._data.endSceneContainer.visible = false;
-    this._app.stage.removeChild(this._data.endSceneContainer);
+  private _waitWhenGameToEnd() {
+    this._interval = setInterval(() => {
+      if (window.countTime === 0) {
+        this._sceneSettings.setEndScene();
+        
+        window.stopGame = true;
+        gameSceneBackgroundSound.stop();
+        
+        clearInterval(this._interval);
+      }
+    }, 1000);
+  }
 
-    this._app.stage.addChild(this._data.gameSceneContainer);
-    this._data.gameSceneContainer.visible = true;
+  private tryAgain = (): void => {
+    this._sceneSettings.setGameScene();
 
     window.stopGame = false;
     window.countTime = 120;
@@ -106,11 +99,7 @@ class Game {
   };
 
   private _startGame = (): void => {
-    this._data.startSceneContainer.visible = false;
-    this._app.stage.removeChild(this._data.startSceneContainer);
-
-    this._data.gameSceneContainer.visible = true;
-    this._app.stage.addChild(this._data.gameSceneContainer);
+    this._sceneSettings.setGameScene()
 
     window.stopGame = false;
     gameSceneBackgroundSound.play();
@@ -132,7 +121,9 @@ class Game {
 
     this._app.resize(newWidth, newHeight);
 
-    this._sceneSettings.resize(newWidth, newHeight);
+    this._startScene.resize(newWidth, newHeight);
+    this._gameScene.resize(newWidth, newHeight);
+    this._endScene.resize(newWidth, newHeight)
   };
 
   private initCanvasStyles(): void {
@@ -144,8 +135,6 @@ class Game {
 }
 declare global {
   interface Window {
-    TWEEN: any;
-
     PIXI: any;
     app: any;
 
@@ -160,8 +149,6 @@ declare global {
     stopGame: boolean;
   }
 }
-window.TWEEN = TWEEN;
-
 window.PIXI = PIXI;
 
 window.loader = new PIXI.Loader();

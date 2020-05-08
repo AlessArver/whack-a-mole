@@ -3,11 +3,6 @@ import { ScoreBar } from "./scoreBar";
 import { MoleController } from "./mole/moleController";
 import { GameSceneDataOptions } from "../../types/types";
 
-type GameSceneOptions = {
-  TWEEN: any;
-  container: any;
-};
-
 export class GameScene {
   private _data: GameSceneDataOptions = {
     scoreBarContainer: new window.PIXI.Container(),
@@ -15,14 +10,12 @@ export class GameScene {
     whiteBackground: new window.PIXI.Graphics(),
     holes: [],
   };
-  private _TWEEN: any;
   private _container: any;
   private _grass;
   private _moles;
 
-  constructor(options: GameSceneOptions) {
-    this._TWEEN = options.TWEEN;
-    this._container = options.container;
+  constructor() {
+    this._container = new PIXI.Container();
     this._data.whiteBackground.beginFill(0xffffff);
     this._data.whiteBackground.drawRect(0, 0, window.app.view.width, 100);
     this._data.whiteBackground.endFill();
@@ -35,6 +28,10 @@ export class GameScene {
     this._data.whiteBackground.zIndex = 1;
 
     this.initScene();
+  }
+
+  get container(): PIXI.Container {
+    return this._container;
   }
 
   get gameSceneData(): any {
@@ -51,7 +48,6 @@ export class GameScene {
         window.countTime--;
         scoreBar.update(window.countTime, window.scoreCount);
         let mole: any = new MoleController({
-          TWEEN: this._TWEEN,
           currentTime: window.countTime,
           gameSceneContainer: this._container,
         });
@@ -76,9 +72,14 @@ export class GameScene {
     this._container.addChild(this._data.holesContainer);
   }
 
-  private _resize() {
-    if (this._moles)
-      this._moles.x = (window.app.view.width - this._moles.width) / 2;
+  public resize(newWidth: number, newHeight) {
+    this._data.whiteBackground.y = newHeight - this._data.whiteBackground.height + 50;
+    this._data.holesContainer.x = (newWidth - this._data.holesContainer.width) / 2;
+    this._data.scoreBarContainer.x = (newWidth - this._data.scoreBarContainer.width) / 2;
+    this._data.holes.forEach(
+      (hole: Hole) =>
+        (hole.grass.y = newHeight - this._grass.height - 50)
+    );
   }
 
   get grass(): any {

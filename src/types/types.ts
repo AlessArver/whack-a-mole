@@ -57,6 +57,5 @@ export type MoleControllerOptions = {
 };
 
 export type EndSceneOptions = {
-  container: any;
   onTryAgain: () => void;
 };

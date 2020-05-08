@@ -3,7 +3,6 @@ import { StartSceneDataOptions } from "../types/types";
 
 type StartSceneOptions = {
   app: any;
-  container: any;
   onGameStart: () => void;
 };
 
@@ -21,7 +20,7 @@ export class StartScene {
 
   constructor(options: StartSceneOptions) {
     this._app = options.app;
-    this._container = options.container;
+    this._container = new PIXI.Container();
     this._onGameSceneCallback = options.onGameStart;
     this._style = new window.PIXI.TextStyle({
       fontFamily: "sans-serif",
@@ -30,6 +29,10 @@ export class StartScene {
     });
 
     this._createShowButton();
+  }
+
+  get container(): PIXI.Container {
+    return this._container;
   }
 
   private _startMouseover = (e) => {
@@ -74,5 +77,12 @@ export class StartScene {
       requestAnimationFrame(animate);
       this._app.render(this._startButton);
     };
+  }
+
+  public resize(newWidth, newHeight) {
+    this._container.position.set(
+      (newWidth - this._container.width) / 2,
+      (newHeight - this._container.height) / 2
+    );
   }
 }
