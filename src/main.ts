@@ -29,11 +29,11 @@ class Game {
   private _app: any;
 
   private _interval: any;
-  private _startScene: any;
-  private _gameScene: any;
-  private _endScene: any;
+  private _startScene: StartScene;
+  private _gameScene: GameScene;
+  private _endScene: EndScene;
 
-  private _sceneSettings: any;
+  private _sceneSettings: ScenesSettings;
 
   constructor() {
     this._app = new PIXI.Application({
@@ -75,7 +75,7 @@ class Game {
   }
 
   private _waitWhenGameToEnd() {
-    this._interval = setInterval(() => {
+    this._interval = setInterval((): void => {
       if (window.countTime === 0) {
         this._endScene.setGameEndData(
           window.scoreCount, 
@@ -144,8 +144,8 @@ declare global {
     PIXI: any;
     app: any;
 
-    loader: any;
-    renderer: any;
+    loader: PIXI.Loader;
+    renderer: PIXI.Renderer;
 
     countTime: number;
     scoreCount: number;

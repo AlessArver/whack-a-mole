@@ -3,8 +3,8 @@ type EndSceneOptions = {
 };
 
 export class EndScene {
-  private _container;
-  private _onTryAgainCallback;
+  private _container: PIXI.Container;
+  private _onTryAgainCallback: () => void;
 
   private _score: PIXI.Text;
   private _hitMole: PIXI.Text;
@@ -39,7 +39,11 @@ export class EndScene {
     this._container.addChild(tryAgain);
   }
 
-  public setGameEndData(scoreCount: number, hitMoleCount: number, missesCount: number) {
+  public setGameEndData(
+    scoreCount: number,
+    hitMoleCount: number,
+    missesCount: number
+  ): void {
     this._score.text = `Score: ${scoreCount}`;
     this._hitMole.text = `Hit: ${hitMoleCount}`;
     this._missesMole.text = `Misses: ${missesCount}`;
@@ -49,7 +53,7 @@ export class EndScene {
     return this._container;
   }
 
-  public resize(newWidth: number, newHeight: number) {
+  public resize(newWidth: number, newHeight: number): void {
     this._container.position.set(
       (newWidth - this._container.width) / 2,
       (newHeight - this._container.height) / 2

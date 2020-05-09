@@ -21,12 +21,12 @@ class Mole {
   };
 
   protected _coordinates: Array<number>;
-  protected _rectangle: any;
+  protected _rectangle: PIXI.Rectangle;
   protected _moleX: number;
   protected _holeIndex: number;
   protected _scoreCount: number;
-  protected _moles: any;
-  public simpleMole: any;
+  protected _moles: PIXI.Container;
+  public simpleMole: boolean;
 
   constructor(options: MoleOptions) {
     this._holeIndex = options.holeIndex;
@@ -38,17 +38,13 @@ class Mole {
     this._moles = new window.PIXI.Container();
     this._moles.width = 388;
     this._moles.x = (window.app.view.width - this._moles.width) / 2;
-    // setInterval(
-    //   () => (this._moles.x = (window.app.view.width - this._moles.width) / 2),
-    //   100
-    // );
   }
-  get moles() {
+  get moles(): PIXI.Container {
     return this._moles;
   }
 
-  public resize(newWidth: number, newHeight: number) {
-    this._moles.x = (newWidth - this._moles.width) / 2
+  public resize(newWidth: number, newHeight: number): void {
+    this._moles.x = (newWidth - this._moles.width) / 2;
   }
 
   private _addMoleInHole(mole, container): void {
@@ -96,13 +92,13 @@ class Mole {
   }
   private _animationDown(mole, isMoleDown): void {
     if (isMoleDown && mole) {
-      for (let i = 0; i < 5; i++) {
+      for (let i: number = 0; i < 5; i++) {
         if (this._moleX === this._coordinates[i] && holes[i].length)
           this._moleDown(holes[i], mole, isMoleDown);
       }
     } else {
       this._moles.children.forEach((m) => {
-        for (let i = 0; i < 5; i++) {
+        for (let i: number = 0; i < 5; i++) {
           if (this._moleX === this._coordinates[i] && holes[i].length)
             this._moleDown(holes[i], m, isMoleDown);
         }
@@ -110,7 +106,7 @@ class Mole {
     }
   }
 
-  private _mouseDown = (e): void => {
+  private _mouseDown = (e: any): void => {
     this._data.deadMoleTexture.frame = this._data.deadMoleRectangle;
     e.target.texture = this._data.deadMoleTexture;
 
@@ -121,12 +117,12 @@ class Mole {
     this._animationDown(e.target, true);
   };
   private _removeMole(mole): void {
-    setTimeout(() => {
+    setTimeout((): void => {
       this._animationDown(mole, false);
     }, 3000);
   }
 
-  public create(container): void {
+  public create(container: PIXI.Container): void {
     this._data.texture.frame = this._rectangle;
     this._moleX = this._coordinates[this._holeIndex];
     let mole: any = new window.PIXI.Sprite(this._data.texture);

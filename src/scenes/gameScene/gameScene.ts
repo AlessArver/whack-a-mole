@@ -10,8 +10,8 @@ export class GameScene {
     whiteBackground: new window.PIXI.Graphics(),
     holes: [],
   };
-  private _container: any;
-  private _grass: any;
+  private _container: PIXI.Container;
+  private _grass: PIXI.Sprite;
   private _moleController: any;
 
   constructor() {
@@ -53,11 +53,13 @@ export class GameScene {
       }
     }, 1000);
 
-    const holesPositions = [0, 97, 194, 291, 388];
-    for (let index = 0; index < 5; index++) {
+    const holesPositionsX: Array<number> = [0, 97, 194, 291, 388];
+    const holesPositionsY: Array<number> = [400, 97, 194, 291, 388];
+    for (let i: number = 0; i < 5; i++) {
       let hole: any = new Hole({
         appHeight: window.app.view.height,
-        x: holesPositions[index],
+        x: holesPositionsX[i],
+        y: 200,
       });
       this._data.holes.push(hole);
       this._data.holesContainer.addChild(hole.grass);
@@ -67,19 +69,20 @@ export class GameScene {
     this._container.addChild(this._data.holesContainer);
   }
 
-  public resize(newWidth: number, newHeight: number) {
-    this._data.whiteBackground.y = newHeight - this._data.whiteBackground.height + 50;
-    this._data.holesContainer.x = (newWidth - this._data.holesContainer.width) / 2;
-    this._data.scoreBarContainer.x = (newWidth - this._data.scoreBarContainer.width) / 2;
+  public resize(newWidth: number, newHeight: number): void {
+    this._data.whiteBackground.y =
+      newHeight - this._data.whiteBackground.height + 50;
+    this._data.holesContainer.x =
+      (newWidth - this._data.holesContainer.width) / 2;
+    this._data.scoreBarContainer.x =
+      (newWidth - this._data.scoreBarContainer.width) / 2;
     this._data.holes.forEach(
-      (hole: Hole) =>
-        (hole.grass.y = newHeight - this._grass.height - 50)
+      (hole: Hole) => (hole.grass.y = newHeight - this._grass.height - 50)
     );
-    this._moleController.resize()
-  
+    this._moleController.resize();
   }
 
-  get grass(): any {
+  get grass(): PIXI.Sprite {
     return this._grass;
   }
 }

@@ -1,12 +1,12 @@
 import { SimpleMole, StrongMole } from "./mole";
 
 type MoleControllerOptions = {
-  gameSceneContainer: any;
+  gameSceneContainer: PIXI.Container;
 };
 
 export class MoleController {
-  private _gameSceneContainer: any;
-  private _moles: Array<SimpleMole|StrongMole> = [];
+  private _gameSceneContainer: PIXI.Container;
+  private _moles: Array<SimpleMole | StrongMole> = [];
 
   constructor(options: MoleControllerOptions) {
     this._gameSceneContainer = options.gameSceneContainer;
@@ -29,14 +29,14 @@ export class MoleController {
           holeIndex: Math.floor(Math.random() * 5),
         });
         mole.create(this._gameSceneContainer);
-        this._moles.push(mole)
+        this._moles.push(mole);
         break;
       }
     }
   }
 
-  public resize(newWidth: number, newHeight: number) {
-    this._moles.forEach(mole => mole.resize(newWidth, newHeight))
+  public resize(newWidth: number, newHeight: number): void {
+    this._moles.forEach((mole) => mole.resize(newWidth, newHeight));
   }
 
   private _createAndRemoveMole(): void {

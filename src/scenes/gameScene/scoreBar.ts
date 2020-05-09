@@ -2,9 +2,9 @@ import { gameSceneBackgroundSound } from "../../sounds";
 import { ScoreBarOptions } from "../../types/types";
 
 export class ScoreBar {
-  private _container: any;
-  private _timer: any;
-  private _score: any;
+  private _container: PIXI.Container;
+  private _timer: PIXI.Text;
+  private _score: PIXI.Text;
 
   constructor(options: ScoreBarOptions) {
     this._container = options.container;
@@ -20,12 +20,12 @@ export class ScoreBar {
     this._createStopButton();
   }
 
-  public update(countTime: number, scoreCount: number) {
+  public update(countTime: number, scoreCount: number): void {
     this._timer.text = `Timer: ${countTime}s`;
     this._score.text = `Score: ${scoreCount}`;
   }
 
-  private _stopButtonMousedown = (e) => {
+  private _stopButtonMousedown = (): void => {
     window.stopGame = !window.stopGame;
     switch (window.stopGame) {
       case false:
@@ -37,7 +37,7 @@ export class ScoreBar {
     }
   };
 
-  private _createStopButton = () => {
+  private _createStopButton = (): void => {
     let stopButton = new window.PIXI.Container();
     let stopButtonText = new window.PIXI.Text("Stop");
     stopButton.position.set(350, 0);
