@@ -1,7 +1,13 @@
 import { Hole } from "./hole";
 import { ScoreBar } from "./scoreBar";
 import { MoleController } from "./mole/moleController";
-import { GameSceneDataOptions } from "../../types/types";
+
+type GameSceneDataOptions = {
+  scoreBarContainer: any;
+  holesContainer: any;
+  whiteBackground: any;
+  holes: Array<any>;
+};
 
 export class GameScene {
   private _data: GameSceneDataOptions = {
@@ -82,7 +88,7 @@ export class GameScene {
     this._moleController.resize();
   }
 
-  get grass(): PIXI.Sprite {
+  get grass(): any {
     return this._grass;
   }
 }

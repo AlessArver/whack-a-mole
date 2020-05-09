@@ -1,9 +1,13 @@
 import { buttonClickSound } from "../sounds";
-import { StartSceneDataOptions } from "../types/types";
 
 type StartSceneOptions = {
   app: any;
   onGameStart: () => void;
+};
+type StartSceneDataOptions = {
+  beginFill: number;
+  buttonTextColor: number;
+  buttonTextMouseOver: number;
 };
 
 export class StartScene {

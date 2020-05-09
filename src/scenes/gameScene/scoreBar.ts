@@ -1,5 +1,8 @@
 import { gameSceneBackgroundSound } from "../../sounds";
-import { ScoreBarOptions } from "../../types/types";
+
+type ScoreBarOptions = {
+  container: any;
+};
 
 export class ScoreBar {
   private _container: PIXI.Container;

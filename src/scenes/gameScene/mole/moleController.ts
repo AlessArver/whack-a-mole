@@ -44,7 +44,7 @@ export class MoleController {
       if (window.stopGame === false) {
         this._choiceAndCreateMole();
       }
-    }, 3500);
+    }, 5000);
   }
 
   public showMoles(currentTime): void {

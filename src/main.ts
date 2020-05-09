@@ -6,29 +6,13 @@ import { EndScene } from "./scenes/endScene";
 import { gameSceneBackgroundSound } from "./sounds";
 import { ScenesSettings } from "./scenes/scenesSettings";
 
-type MainDataOptions = {
-  countTime: number;
-  scoreCount: number;
-  hitMoleCount: number;
-  missesCount: number;
-  stopGame: boolean;
-};
-
 // Responsive app
 const logicalWidth: number = 320;
 const logicalHeight: number = 240;
 
 class Game {
-  private _data: MainDataOptions = {
-    countTime: 120,
-    scoreCount: 0,
-    hitMoleCount: 0,
-    missesCount: 0,
-    stopGame: true,
-  };
   private _app: any;
 
-  private _interval: any;
   private _startScene: StartScene;
   private _gameScene: GameScene;
   private _endScene: EndScene;
@@ -75,19 +59,17 @@ class Game {
   }
 
   private _waitWhenGameToEnd() {
-    this._interval = setInterval((): void => {
-      if (window.countTime === 0) {
+    setInterval((): void => {
+      if (window.countTime === 110) {
         this._endScene.setGameEndData(
-          window.scoreCount, 
-          window.hitMoleCount, 
+          window.scoreCount,
+          window.hitMoleCount,
           window.missesCount
         );
         this._sceneSettings.setEndScene();
-        
+
         window.stopGame = true;
         gameSceneBackgroundSound.stop();
-        
-        clearInterval(this._interval);
       }
     }, 1000);
   }
@@ -145,7 +127,6 @@ declare global {
     app: any;
 
     loader: PIXI.Loader;
-    renderer: PIXI.Renderer;
 
     countTime: number;
     scoreCount: number;
@@ -158,7 +139,6 @@ declare global {
 window.PIXI = PIXI;
 
 window.loader = new PIXI.Loader();
-window.renderer = new PIXI.Renderer();
 
 window.countTime = 120;
 window.scoreCount = 0;

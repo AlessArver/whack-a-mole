@@ -1,9 +1,13 @@
 import TWEEN from "@tweenjs/tween.js";
 import { hitMoleSound } from "../../../sounds";
-import { MoleDataOptions } from "../../../types/types";
 
 type MoleOptions = {
   holeIndex: number;
+};
+type MoleDataOptions = {
+  texture: any;
+  deadMoleTexture: any;
+  deadMoleRectangle: any;
 };
 
 let holes: Array<any> = [[], [], [], [], []];
@@ -72,10 +76,10 @@ class Mole {
   }
   private _moleDown(array, mole, isMoleDown): void {
     let coords: MoleCoordsOptions = {
-      y: window.app.view.height - mole.height + 80,
+      y: window.app.view.height - mole.height + 85,
     };
     let tween: any = new (TWEEN as any).Tween(coords)
-      .to({ y: coords.y }, 500)
+      .to({ y: coords.y }, 1000)
       .onUpdate((): void => {
         mole.y = coords.y;
       })
