@@ -15,12 +15,11 @@ export class ScoreBar {
 
     const scoreTexture =
       window.loader.resources["../assets/imgs/icons/score.svg"].texture;
-    const scoreSprite = new window.PIXI.Sprite(scoreTexture)
+    const scoreSprite = new window.PIXI.Sprite(scoreTexture);
     scoreSprite.width = 35;
     scoreSprite.height = 35;
-    scoreSprite.position.set(0, 10)
-    this._container.addChild(scoreSprite)
-
+    scoreSprite.position.set(0, 10);
+    this._container.addChild(scoreSprite);
 
     this._score = new window.PIXI.Text(`${window.scoreCount}`);
     this._score.position.set(60, 10);
@@ -50,7 +49,7 @@ export class ScoreBar {
   }
 
   private _stopButtonMousedown = (stopButtonTexturePause, stopButton): void => {
-    stopButton.on("mousedown", () => {
+    stopButton.on("mousedown", (): void => {
       window.stopGame = !window.stopGame;
       switch (window.stopGame) {
         case false:
@@ -69,10 +68,10 @@ export class ScoreBar {
     stopMusic: PIXI.Sprite,
     isStopMusic: boolean
   ): void => {
-    stopMusic.on("mousedown", () => {
+    stopMusic.on("mousedown", (): void => {
       isStopMusic = !isStopMusic;
       if (isStopMusic) {
-        const stopMusicTextureStop =
+        const stopMusicTextureStop: PIXI.Texture =
           window.loader.resources["../assets/imgs/icons/nomusic.svg"].texture;
         stopMusic.texture = stopMusicTextureStop;
         gameSceneBackgroundSound.stop();
@@ -84,9 +83,9 @@ export class ScoreBar {
   };
 
   private _createStopButton = (): void => {
-    const stopButtonTexture =
+    const stopButtonTexture: PIXI.Texture =
       window.loader.resources["../assets/imgs/icons/pause.svg"].texture;
-    const stopButton = new window.PIXI.Sprite(stopButtonTexture);
+    const stopButton: PIXI.Sprite = new window.PIXI.Sprite(stopButtonTexture);
     stopButton.width = 35;
     stopButton.height = 35;
     stopButton.position.set(300, 10);

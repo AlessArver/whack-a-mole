@@ -28,7 +28,6 @@ class Mole {
   protected _positionsX: Array<number>;
   protected _rectangle: PIXI.Rectangle;
   protected _moleX: number;
-  private _moleY: number;
   protected _holeIndex: number;
   protected _scoreCount: number;
   protected _moles: PIXI.Container;
@@ -42,7 +41,10 @@ class Mole {
 
   protected createMoleContainer(): void {
     this._moles = new window.PIXI.Container();
-    this._moles.x = (window.app.view.width - this._moles.width) / 2;
+    this._moles.position.set(
+      (window.app.view.width - this._moles.width) / 2,
+      0
+    );
   }
   get moles(): PIXI.Container {
     return this._moles;
@@ -70,7 +72,6 @@ class Mole {
     // new (TWEEN as any)
     let tween: any = new TWEEN.default.Tween(target)
       .to({ y: window.app.view.height - mole.height - 50 }, 1000)
-      // .easing(TWEEN.default.Easing.Back.Out)
       .onUpdate((): void => {
         mole.y = target.y;
       });
@@ -81,7 +82,6 @@ class Mole {
 
     let tween: any = new TWEEN.default.Tween(target)
       .to({ y: window.app.view.height - mole.height + 85 }, 1000)
-      // .easing(TWEEN.default.Easing.Back.Out)
       .onUpdate((): void => {
         mole.y = target.y;
       })

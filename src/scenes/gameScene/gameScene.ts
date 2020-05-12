@@ -55,6 +55,14 @@ export class GameScene {
         this._moleController.showMoles(window.countTime);
       }
     }, 1000);
+    setInterval(
+      (): void =>
+        this._moleController.resize(
+          window.app.view.width,
+          window.app.view.height
+        ),
+      100
+    );
 
     const holesPositions = [0, 97, 194, 291, 388];
     for (let i: number = 1; i <= 5; i++) {
