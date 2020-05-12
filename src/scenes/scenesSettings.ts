@@ -6,7 +6,7 @@ type ScenesSettingsOptions = {
 };
 
 export class ScenesSettings {
-  private _app;
+  private _app: any;
   private _gameSceneContainer: PIXI.Container;
   private _startSceneContainer: PIXI.Container;
   private _endSceneContainer: PIXI.Container;

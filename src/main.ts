@@ -36,6 +36,12 @@ class Game {
       .add("../assets/imgs/grass.png")
       .add("../assets/imgs/moles.png")
       .add("../assets/imgs/moles_dead.png")
+      .add("../assets/imgs/icons/clock.svg")
+      .add("../assets/imgs/icons/pause.svg")
+      .add("../assets/imgs/icons/play.svg")
+      .add("../assets/imgs/icons/music.svg")
+        .add("../assets/imgs/icons/nomusic.svg")
+        .add("../assets/imgs/icons/score.svg")
       .load((): void => {
         this._startScene = new StartScene({
           app: this._app,
@@ -58,9 +64,9 @@ class Game {
       });
   }
 
-  private _waitWhenGameToEnd() {
+  private _waitWhenGameToEnd(): void {
     setInterval((): void => {
-      if (window.countTime === 110) {
+      if (window.countTime === 0) {
         this._endScene.setGameEndData(
           window.scoreCount,
           window.hitMoleCount,
@@ -75,19 +81,19 @@ class Game {
   }
 
   private tryAgain = (): void => {
-    this._sceneSettings.setGameScene();
-
     window.stopGame = false;
     window.countTime = 120;
     window.scoreCount = 0;
     window.hitMoleCount = 0;
     window.missesCount = 0;
 
+    this._sceneSettings.setGameScene();
+
     gameSceneBackgroundSound.play();
   };
 
   private _startGame = (): void => {
-    this._sceneSettings.setGameScene()
+    this._sceneSettings.setGameScene();
 
     window.stopGame = false;
     gameSceneBackgroundSound.play();
@@ -111,7 +117,7 @@ class Game {
 
     this._startScene.resize(newWidth, newHeight);
     this._gameScene.resize(newWidth, newHeight);
-    this._endScene.resize(newWidth, newHeight)
+    this._endScene.resize(newWidth, newHeight);
   };
 
   private initCanvasStyles(): void {

@@ -1,23 +1,30 @@
 type HoleOptions = {
-  appHeight: number;
   x: number;
-  y: number;
 };
 
 export class Hole {
   private _texture: any;
   private _grass: PIXI.Sprite;
-  private _appHeight: number;
   private _x: number;
-  private _y: number;
 
   constructor(options: HoleOptions) {
-    this._appHeight = options.appHeight;
     this._x = options.x;
-    this._y = options.y;
+
+    this._createMole();
+  }
+
+  private _createMole() {
     this._texture = window.loader.resources["../assets/imgs/grass.png"].texture;
     this._grass = new window.PIXI.Sprite(this._texture);
-    this._grass.x = this._x
+    this._grass.position.set(
+      this._x,
+      window.app.view.height - this._grass.height - 50
+    );
+
+    this._grass.interactive = true;
+    this._grass.on("mousedown", (e) => {
+      console.log(`click. x: ${e.target.x}. y: ${e.target.y}`);
+    });
   }
 
   get grass(): PIXI.Sprite {

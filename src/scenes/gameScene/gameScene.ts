@@ -3,10 +3,10 @@ import { ScoreBar } from "./scoreBar";
 import { MoleController } from "./mole/moleController";
 
 type GameSceneDataOptions = {
-  scoreBarContainer: any;
-  holesContainer: any;
-  whiteBackground: any;
-  holes: Array<any>;
+  scoreBarContainer: PIXI.Container;
+  holesContainer: PIXI.Container;
+  whiteBackground: PIXI.Graphics;
+  holes: Array<Hole>;
 };
 
 export class GameScene {
@@ -17,7 +17,7 @@ export class GameScene {
     holes: [],
   };
   private _container: PIXI.Container;
-  private _grass: PIXI.Sprite;
+  private _hole: Hole;
   private _moleController: any;
 
   constructor() {
@@ -48,29 +48,21 @@ export class GameScene {
     this._moleController = new MoleController({
       gameSceneContainer: this._container,
     });
-    let interval: any = setInterval((): void => {
+    setInterval((): void => {
       if (window.countTime > 0 && window.stopGame === false) {
         window.countTime--;
         scoreBar.update(window.countTime, window.scoreCount);
         this._moleController.showMoles(window.countTime);
       }
-      if (window.countTime === 0) {
-        clearInterval(interval);
-      }
     }, 1000);
 
-    const holesPositionsX: Array<number> = [0, 97, 194, 291, 388];
-    const holesPositionsY: Array<number> = [400, 97, 194, 291, 388];
-    for (let i: number = 0; i < 5; i++) {
-      let hole: any = new Hole({
-        appHeight: window.app.view.height,
-        x: holesPositionsX[i],
-        y: 200,
+    const holesPositions = [0, 97, 194, 291, 388];
+    for (let i: number = 1; i <= 5; i++) {
+      this._hole = new Hole({
+        x: holesPositions[i],
       });
-      this._data.holes.push(hole);
-      this._data.holesContainer.addChild(hole.grass);
-
-      this._grass = hole.grass;
+      this._data.holes.push(this._hole);
+      this._data.holesContainer.addChild(this._hole.grass);
     }
     this._container.addChild(this._data.holesContainer);
   }
@@ -82,13 +74,10 @@ export class GameScene {
       (newWidth - this._data.holesContainer.width) / 2;
     this._data.scoreBarContainer.x =
       (newWidth - this._data.scoreBarContainer.width) / 2;
+    this._moleController.resize(newWidth, newHeight);
     this._data.holes.forEach(
-      (hole: Hole) => (hole.grass.y = newHeight - this._grass.height - 50)
+      (hole: Hole) => (hole.grass.y = newHeight - hole.grass.height - 50)
     );
     this._moleController.resize();
-  }
-
-  get grass(): any {
-    return this._grass;
   }
 }
