@@ -64,12 +64,15 @@ export class GameScene {
       100
     );
 
-    const holesPositions = [0, 97, 194, 291, 388];
-    for (let i: number = 1; i <= 5; i++) {
+    const holesPositionsX = [0, 0, 190, 388, 388];
+    const holesPositionsY = [70, 250, 150, 250, 70];
+
+    for (let i: number = 0; i < 5; i++) {
       this._hole = new Hole({
-        x: holesPositions[i],
+        x: holesPositionsX[i],
+        y: holesPositionsY[i],
       });
-      this._data.holes.push(this._hole);
+      // this._data.holes.push(this._hole);
       this._data.holesContainer.addChild(this._hole.grass);
     }
     this._container.addChild(this._data.holesContainer);
@@ -78,14 +81,18 @@ export class GameScene {
   public resize(newWidth: number, newHeight: number): void {
     this._data.whiteBackground.y =
       newHeight - this._data.whiteBackground.height + 50;
-    this._data.holesContainer.x =
-      (newWidth - this._data.holesContainer.width) / 2;
+    this._data.holesContainer.position.set(
+      (newWidth - this._data.holesContainer.width) / 2,
+      (newHeight - this._data.holesContainer.height) / 2
+    );
+    // this._data.holesContainer.x =
+    //   (newWidth - this._data.holesContainer.width) / 2;
     this._data.scoreBarContainer.x =
       (newWidth - this._data.scoreBarContainer.width) / 2;
     this._moleController.resize(newWidth, newHeight);
-    this._data.holes.forEach(
-      (hole: Hole) => (hole.grass.y = newHeight - hole.grass.height - 50)
-    );
+    // this._data.holes.forEach(
+    //   (hole: Hole) => (hole.grass.y = newHeight - hole.grass.height - 50)
+    // );
     this._moleController.resize();
   }
 }
