@@ -69,7 +69,7 @@ class Game {
 
   private _waitWhenGameToEnd(): void {
     setInterval((): void => {
-      if (window.countTime === 115) {
+      if (window.countTime === 0) {
         this._endScene.setGameEndData(
           window.scoreCount,
           window.hitMoleCount,
