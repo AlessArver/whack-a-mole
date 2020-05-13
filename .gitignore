@@ -1,4 +1,6 @@
 .idea
+.git
+git
 
 node_modules
 
