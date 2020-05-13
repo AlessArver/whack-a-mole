@@ -5,7 +5,7 @@
   "author": "Olesya Vyalya",
   "license": "MIT",
   "scripts": {
-    "start": "webpack -p && node ./public/src/main.js",
+    "start": "node ./public/src/main.js",
     "dev": "webpack-dev-server --mode development",
     "build": "webpack --mode production"
   },
