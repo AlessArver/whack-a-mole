@@ -3,6 +3,7 @@ const webpack = require("webpack")
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
+    mode: 'development',
     entry: "./src/main.ts",
     output: {
         filename: "bundle.js",
@@ -17,6 +18,7 @@ module.exports = {
             { test: /\.(gif|png|jpe?g|svg|xml)$/i, use: "file-loader" }
         ]
     },
+    devtool: 'inline-source-map',
     plugins: [
         new webpack.DefinePlugin({
             CANVAS_RENDERER: JSON.stringify(true),
