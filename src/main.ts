@@ -19,6 +19,9 @@ class Game {
 
   private _sceneSettings: ScenesSettings;
 
+  private _stopButton: PIXI.Sprite;
+  private _stopMusic: PIXI.Sprite;
+
   constructor() {
     this._app = new PIXI.Application({
       autoDensity: true,
@@ -40,8 +43,8 @@ class Game {
       .add("../assets/imgs/icons/pause.svg")
       .add("../assets/imgs/icons/play.svg")
       .add("../assets/imgs/icons/music.svg")
-        .add("../assets/imgs/icons/nomusic.svg")
-        .add("../assets/imgs/icons/score.svg")
+      .add("../assets/imgs/icons/nomusic.svg")
+      .add("../assets/imgs/icons/score.svg")
       .load((): void => {
         this._startScene = new StartScene({
           app: this._app,
@@ -66,7 +69,7 @@ class Game {
 
   private _waitWhenGameToEnd(): void {
     setInterval((): void => {
-      if (window.countTime === 0) {
+      if (window.countTime === 115) {
         this._endScene.setGameEndData(
           window.scoreCount,
           window.hitMoleCount,
@@ -75,6 +78,7 @@ class Game {
         this._sceneSettings.setEndScene();
 
         window.stopGame = true;
+        window.stopMusic = true;
         gameSceneBackgroundSound.stop();
       }
     }, 1000);
@@ -82,12 +86,21 @@ class Game {
 
   private tryAgain = (): void => {
     window.stopGame = false;
+    window.stopMusic = false;
     window.countTime = 120;
     window.scoreCount = 0;
     window.hitMoleCount = 0;
     window.missesCount = 0;
 
     this._sceneSettings.setGameScene();
+
+    this._stopButton = this._gameScene.stopButton;
+    this._stopButton.texture =
+      window.loader.resources["../assets/imgs/icons/play.svg"].texture;
+
+    this._stopMusic = this._gameScene.stopMusic;
+    this._stopMusic.texture =
+      window.loader.resources["../assets/imgs/icons/music.svg"].texture;
 
     gameSceneBackgroundSound.play();
   };
@@ -96,6 +109,7 @@ class Game {
     this._sceneSettings.setGameScene();
 
     window.stopGame = false;
+    window.stopMusic = false;
     gameSceneBackgroundSound.play();
   };
 
@@ -140,6 +154,7 @@ declare global {
     missesCount: number;
 
     stopGame: boolean;
+    stopMusic: boolean;
   }
 }
 window.PIXI = PIXI;
@@ -152,6 +167,7 @@ window.hitMoleCount = 0;
 window.missesCount = 0;
 
 window.stopGame = true;
+window.stopMusic = true;
 
 let animate = (): void => {
   requestAnimationFrame(animate);

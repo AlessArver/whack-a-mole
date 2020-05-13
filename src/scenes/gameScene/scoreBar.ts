@@ -9,13 +9,15 @@ export class ScoreBar {
   private _timer: PIXI.Text;
   private _timerContainer: PIXI.Container;
   private _score: PIXI.Text;
+  private _stopButton: PIXI.Sprite;
+  private _stopMusic: PIXI.Sprite;
 
   constructor(options: ScoreBarOptions) {
     this._container = options.container;
 
-    const scoreTexture =
+    const scoreTexture: PIXI.Texture =
       window.loader.resources["../assets/imgs/icons/score.svg"].texture;
-    const scoreSprite = new window.PIXI.Sprite(scoreTexture);
+    const scoreSprite: PIXI.Sprite = new window.PIXI.Sprite(scoreTexture);
     scoreSprite.width = 35;
     scoreSprite.height = 35;
     scoreSprite.position.set(0, 10);
@@ -27,9 +29,9 @@ export class ScoreBar {
 
     this._timerContainer = new window.PIXI.Container();
 
-    const clockTexture =
+    const clockTexture: PIXI.Texture =
       window.loader.resources["../assets/imgs/icons/clock.svg"].texture;
-    const clockSprite = new window.PIXI.Sprite(clockTexture);
+    const clockSprite: PIXI.Sprite = new window.PIXI.Sprite(clockTexture);
     clockSprite.width = 35;
     clockSprite.height = 35;
     clockSprite.position.set(150, 10);
@@ -48,32 +50,32 @@ export class ScoreBar {
     this._score.text = `${scoreCount}`;
   }
 
-  private _stopButtonMousedown = (stopButtonTexturePause, stopButton): void => {
+  private _stopButtonMousedown = (
+    stopButtonTexture: PIXI.Texture,
+    stopButton: PIXI.Sprite
+  ): void => {
     stopButton.on("mousedown", (): void => {
       window.stopGame = !window.stopGame;
       switch (window.stopGame) {
         case false:
-          stopButton.texture = stopButtonTexturePause;
+          stopButton.texture = stopButtonTexture;
           break;
         case true:
-          const stopButtonTexturePlay =
-            window.loader.resources["../assets/imgs/icons/play.svg"].texture;
-          stopButton.texture = stopButtonTexturePlay;
+          stopButton.texture =
+            window.loader.resources["../assets/imgs/icons/pause.svg"].texture;
           break;
       }
     });
   };
   private _stopMusicMousedown = (
     stopMusicTexture: PIXI.Texture,
-    stopMusic: PIXI.Sprite,
-    isStopMusic: boolean
+    stopMusic: PIXI.Sprite
   ): void => {
     stopMusic.on("mousedown", (): void => {
-      isStopMusic = !isStopMusic;
-      if (isStopMusic) {
-        const stopMusicTextureStop: PIXI.Texture =
+      window.stopMusic = !window.stopMusic;
+      if (window.stopMusic) {
+        stopMusic.texture =
           window.loader.resources["../assets/imgs/icons/nomusic.svg"].texture;
-        stopMusic.texture = stopMusicTextureStop;
         gameSceneBackgroundSound.stop();
       } else {
         stopMusic.texture = stopMusicTexture;
@@ -84,30 +86,34 @@ export class ScoreBar {
 
   private _createStopButton = (): void => {
     const stopButtonTexture: PIXI.Texture =
-      window.loader.resources["../assets/imgs/icons/pause.svg"].texture;
-    const stopButton: PIXI.Sprite = new window.PIXI.Sprite(stopButtonTexture);
-    stopButton.width = 35;
-    stopButton.height = 35;
-    stopButton.position.set(300, 10);
+      window.loader.resources["../assets/imgs/icons/play.svg"].texture;
+    this._stopButton = new window.PIXI.Sprite(stopButtonTexture);
+    this._stopButton.width = 35;
+    this._stopButton.height = 35;
+    this._stopButton.position.set(300, 10);
 
-    stopButton.interactive = true;
+    this._stopButton.interactive = true;
 
-    this._stopButtonMousedown(stopButtonTexture, stopButton);
-    this._container.addChild(stopButton);
+    this._stopButtonMousedown(stopButtonTexture, this._stopButton);
+    this._container.addChild(this._stopButton);
   };
-  private _createStopMusicButton = () => {
+  private _createStopMusicButton = (): void => {
     const stopMusicTexture: PIXI.Texture =
       window.loader.resources["../assets/imgs/icons/music.svg"].texture;
-    const stopMusic: PIXI.Sprite = new window.PIXI.Sprite(stopMusicTexture);
-    stopMusic.width = 35;
-    stopMusic.height = 35;
-    stopMusic.position.set(400, 10);
+    this._stopMusic = new window.PIXI.Sprite(stopMusicTexture);
+    this._stopMusic.width = 35;
+    this._stopMusic.height = 35;
+    this._stopMusic.position.set(400, 10);
 
-    let isStopMusic: boolean = false;
-
-    stopMusic.interactive = true;
-    this._stopMusicMousedown(stopMusicTexture, stopMusic, isStopMusic);
-
-    this._container.addChild(stopMusic);
+    this._stopMusic.interactive = true;
+    this._stopMusicMousedown(stopMusicTexture, this._stopMusic);
+    this._container.addChild(this._stopMusic);
   };
+
+  get stopButton(): PIXI.Sprite {
+    return this._stopButton;
+  }
+  get stopMusic(): PIXI.Sprite {
+    return this._stopMusic;
+  }
 }

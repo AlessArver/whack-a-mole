@@ -1,4 +1,3 @@
-// import TWEEN from "@tweenjs/tween.js";
 const TWEEN: any = require("@tweenjs/tween.js");
 import { hitMoleSound } from "../../../sounds";
 
@@ -7,16 +6,12 @@ type MoleOptions = {
 };
 type MoleDataOptions = {
   positionsY: Array<number>;
-  texture: any;
-  deadMoleTexture: any;
+  texture: PIXI.Texture;
+  deadMoleTexture: PIXI.Texture;
   deadMoleRectangle: PIXI.Rectangle;
 };
 
 let holes: Array<any> = [[], [], [], [], []];
-
-type MoleCoordsOptions = {
-  alpha: any;
-};
 
 class Mole {
   private _data: MoleDataOptions = {
@@ -57,13 +52,6 @@ class Mole {
       (window.app.view.width - this._masks.width) / 2,
       (window.app.view.height - this._masks.height) / 2
     );
-
-    setInterval(() => {
-      this._masks.position.set(
-        (window.app.view.width - this._masks.width) / 2,
-        (window.app.view.height - this._masks.height) / 2
-      );
-    }, 100);
   }
   get moles(): PIXI.Container {
     return this._moles;
@@ -73,6 +61,11 @@ class Mole {
     this._moles.position.set(
       (window.app.view.width - this._moles.width) / 2,
       (window.app.view.height - this._moles.height) / 2
+    );
+
+    this._masks.position.set(
+        (window.app.view.width - this._masks.width) / 2,
+        (window.app.view.height - this._masks.height) / 2
     );
   }
 
@@ -94,9 +87,6 @@ class Mole {
   private _animationUp(mole: PIXI.Sprite): void {
     let target: any = { y: mole.y, alpha: 0 };
 
-    // new (TWEEN as any)
-    // window.app.view.height - mole.height - 50
-    // y: mole.y - 100
     let tween: any = new TWEEN.default.Tween(target)
       .to({ y: mole.y - 60 }, 500)
       .onUpdate((): void => {
@@ -111,7 +101,6 @@ class Mole {
     isMoleDown: boolean
   ): void {
     let target: any = { y: mole.y };
-    // y: window.app.view.height - mole.height + 85
     let tween: any = new TWEEN.default.Tween(target)
       .to({ y: mole.y + 100 }, 1000)
       .onUpdate((): void => {
@@ -154,11 +143,11 @@ class Mole {
       this._data.deadMoleTexture.frame = this._data.deadMoleRectangle;
       e.target.texture = this._data.deadMoleTexture;
 
+      console.log(e.target.x)
+
       window.scoreCount += this._scoreCount;
 
       hitMoleSound.play();
-
-      console.log(`Mole. x: ${e.target.x}. y: ${e.target.y}`);
 
       this._animationDown(e.target, mask, true);
     });
@@ -175,26 +164,27 @@ class Mole {
 
     let mole: PIXI.Sprite = new window.PIXI.Sprite(this._data.texture);
 
-    let y = [-120, 100];
-    if (this._moleX === -15 || this._moleX === 0) this._moleY = -40;
-    if (this._moleX === -230 || this._moleX === 170 || this._moleX === 165)
+    let y = [-110, 80];
+    if (this._moleX === -35 || this._moleX === -30) this._moleY = -30;
+    if (
+      this._moleX === -230 ||
+      this._moleX === -220 ||
+      this._moleX === 160 ||
+      this._moleX === 165
+    )
       this._moleY = y[Math.floor(Math.random() * y.length)];
-    console.log(`MoleY: ${this._moleY}`);
 
     mole.position.set(this._moleX, this._moleY);
-    // mole.position.set(this._moleX, window.app.view.height - mole.height + 85);
 
-    let maskY;
-    if (this._moleY === -40) maskY = -100;
-    else if (this._moleY === 100) maskY = 0;
-    else if (this._moleY === -120) maskY = -165
+    let maskY: number;
+    if (this._moleY === -30) maskY = -90;
+    else if (this._moleY === 80) maskY = 10;
+    else if (this._moleY === -110) maskY = -170;
 
-    let mask = new PIXI.Graphics();
+    let mask: PIXI.Graphics = new PIXI.Graphics();
     mask.beginFill(0x66ccff);
     mask.drawRect(mole.x - 5, maskY, 85, 150);
     mask.endFill();
-    console.log(`MaskY: ${maskY}`);
-    console.log(`Mole. x: ${mole.x}. y: ${mole.y}`);
     mole.mask = mask;
 
     mole.interactive = true;
@@ -209,9 +199,7 @@ class Mole {
 export class SimpleMole extends Mole {
   constructor(options: MoleOptions) {
     super(options);
-    // this._positionsX = [-190, -100, 0, 100, 195];
-    // x:205 y:200 OK
-    this._positionsX = [-230, -230, -15, 170, 170];
+    this._positionsX = [-220, -220, -30, 165, 165];
     this._rectangle = new window.PIXI.Rectangle(0, 0, 60, 150);
     this._scoreCount = 5;
     this.simpleMole = true;
@@ -221,10 +209,7 @@ export class SimpleMole extends Mole {
 export class StrongMole extends Mole {
   constructor(options: MoleOptions) {
     super(options);
-    this._positionsX = [-230, -230, -15, 165, 165];
-    // x:195 y:200 OK
-    // x:0 y:260 OK
-    // this._positionsX = [-195, -95, 0, 95, 195];
+    this._positionsX = [-230, -230, -35, 160, 160];
     this._rectangle = new window.PIXI.Rectangle(60, 0, 70, 150);
     this._scoreCount = 15;
     this.simpleMole = false;

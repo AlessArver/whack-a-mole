@@ -19,6 +19,8 @@ export class GameScene {
   private _container: PIXI.Container;
   private _hole: Hole;
   private _moleController: any;
+  private _stopButton: PIXI.Sprite;
+  private _stopMusic: PIXI.Sprite;
 
   constructor() {
     this._container = new PIXI.Container();
@@ -44,6 +46,8 @@ export class GameScene {
     let scoreBar: any = new ScoreBar({
       container: this._data.scoreBarContainer,
     });
+    this._stopButton = scoreBar.stopButton;
+    this._stopMusic = scoreBar.stopMusic;
     this._container.addChild(this._data.scoreBarContainer);
     this._moleController = new MoleController({
       gameSceneContainer: this._container,
@@ -64,15 +68,13 @@ export class GameScene {
       100
     );
 
-    const holesPositionsX = [0, 0, 190, 388, 388];
-    const holesPositionsY = [70, 250, 150, 250, 70];
-
+    const holesPositionsX: Array<number> = [0, 0, 190, 388, 388];
+    const holesPositionsY: Array<number> = [70, 250, 150, 250, 70];
     for (let i: number = 0; i < 5; i++) {
       this._hole = new Hole({
         x: holesPositionsX[i],
         y: holesPositionsY[i],
       });
-      // this._data.holes.push(this._hole);
       this._data.holesContainer.addChild(this._hole.grass);
     }
     this._container.addChild(this._data.holesContainer);
@@ -85,14 +87,16 @@ export class GameScene {
       (newWidth - this._data.holesContainer.width) / 2,
       (newHeight - this._data.holesContainer.height) / 2
     );
-    // this._data.holesContainer.x =
-    //   (newWidth - this._data.holesContainer.width) / 2;
     this._data.scoreBarContainer.x =
       (newWidth - this._data.scoreBarContainer.width) / 2;
     this._moleController.resize(newWidth, newHeight);
-    // this._data.holes.forEach(
-    //   (hole: Hole) => (hole.grass.y = newHeight - hole.grass.height - 50)
-    // );
     this._moleController.resize();
+  }
+
+  get stopButton(): PIXI.Sprite {
+    return this._stopButton;
+  }
+  get stopMusic(): PIXI.Sprite {
+    return this._stopMusic;
   }
 }

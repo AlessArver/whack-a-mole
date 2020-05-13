@@ -50,17 +50,14 @@ export class MoleController {
   public showMoles(currentTime: number): void {
     switch (currentTime) {
       case 119:
-        console.log(`FIRST IF. Current time: ${currentTime}.`);
         this._createAndRemoveMole();
         break;
       case 90:
-        console.log(`SECOND IF. Current time: ${currentTime}.`);
         for (let i: number = 1; i <= 3; i++) {
           this._createAndRemoveMole();
         }
         break;
       case 45:
-        console.log(`THIRD IF. Current time: ${currentTime}.`);
         for (let i: number = 1; i <= 5; i++) {
           this._createAndRemoveMole();
         }

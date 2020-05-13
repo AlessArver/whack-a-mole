@@ -4,7 +4,7 @@ type HoleOptions = {
 };
 
 export class Hole {
-  private _texture: any;
+  private _texture: PIXI.Texture;
   private _grass: PIXI.Sprite;
   private _x: number;
   private _y: number;
@@ -20,11 +20,6 @@ export class Hole {
     this._texture = window.loader.resources["../assets/imgs/grass.png"].texture;
     this._grass = new window.PIXI.Sprite(this._texture);
     this._grass.position.set(this._x, this._y);
-
-    this._grass.interactive = true;
-    this._grass.on("mousedown", e => {
-      console.log(`Grass. x: ${e.target.x}. y: ${e.target.y}`)
-    })
   }
 
   get grass(): PIXI.Sprite {
