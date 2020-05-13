@@ -5,6 +5,7 @@
   "author": "Olesya Vyalya",
   "license": "MIT",
   "scripts": {
+    "start": "webpack-dev-server",
     "dev": "webpack-dev-server --mode development",
     "build": "webpack --mode production"
   },
