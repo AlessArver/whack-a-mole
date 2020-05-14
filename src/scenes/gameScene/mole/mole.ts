@@ -16,9 +16,9 @@ let holes: Array<any> = [[], [], [], [], []];
 class Mole {
   private _data: MoleDataOptions = {
     positionsY: [200, 300, 150, 300, 200],
-    texture: window.loader.resources["../assets/imgs/moles.png"].texture,
+    texture: window.loader.resources["./assets/imgs/moles.png"].texture,
     deadMoleTexture:
-      window.loader.resources["../assets/imgs/moles_dead.png"].texture,
+      window.loader.resources["./assets/imgs/moles_dead.png"].texture,
     deadMoleRectangle: new window.PIXI.Rectangle(0, 0, 60, 150),
   };
 
@@ -142,8 +142,6 @@ class Mole {
     mole.on("mousedown", (e) => {
       this._data.deadMoleTexture.frame = this._data.deadMoleRectangle;
       e.target.texture = this._data.deadMoleTexture;
-
-      console.log(e.target.x)
 
       window.scoreCount += this._scoreCount;
 

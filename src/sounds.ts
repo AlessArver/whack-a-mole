@@ -1,13 +1,13 @@
 import { Howl } from "howler";
 
 export const buttonClickSound: Howl = new Howl({
-  src: ["../assets/sounds/click.m4a"],
+  src: ["./sounds/click.m4a"],
 });
 
 export const hitMoleSound: Howl = new Howl({
-  src: ["../assets/sounds/oops.wav"],
+  src: ["./sounds/oops.wav"],
 });
 
 export const gameSceneBackgroundSound: Howl = new Howl({
-  src: ["../assets/sounds/LofiTypeBeat -AestheticGirl.mp3"],
+  src: ["./sounds/LofiTypeBeat -AestheticGirl.mp3"],
 });

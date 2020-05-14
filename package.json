@@ -5,7 +5,8 @@
   "author": "Olesya Vyalya",
   "license": "MIT",
   "scripts": {
-    "start": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --open --config webpack.dev.js",
+    "start": "node server.js",
+    "dev": "webpack-dev-server --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js"
   },
   "dependencies": {
@@ -21,6 +22,7 @@
     "@types/pixi.js": "^5.0.0",
     "@types/tweenjs": "^1.0.0",
     "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^5.1.1",
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.0.4",
     "ts-loader": "^6.2.2",

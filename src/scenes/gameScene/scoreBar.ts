@@ -16,7 +16,7 @@ export class ScoreBar {
     this._container = options.container;
 
     const scoreTexture: PIXI.Texture =
-      window.loader.resources["../assets/imgs/icons/score.svg"].texture;
+      window.loader.resources["./assets/imgs/icons/score.svg"].texture;
     const scoreSprite: PIXI.Sprite = new window.PIXI.Sprite(scoreTexture);
     scoreSprite.width = 35;
     scoreSprite.height = 35;
@@ -30,7 +30,7 @@ export class ScoreBar {
     this._timerContainer = new window.PIXI.Container();
 
     const clockTexture: PIXI.Texture =
-      window.loader.resources["../assets/imgs/icons/clock.svg"].texture;
+      window.loader.resources["./assets/imgs/icons/clock.svg"].texture;
     const clockSprite: PIXI.Sprite = new window.PIXI.Sprite(clockTexture);
     clockSprite.width = 35;
     clockSprite.height = 35;
@@ -62,7 +62,7 @@ export class ScoreBar {
           break;
         case true:
           stopButton.texture =
-            window.loader.resources["../assets/imgs/icons/pause.svg"].texture;
+            window.loader.resources["./assets/imgs/icons/pause.svg"].texture;
           break;
       }
     });
@@ -75,7 +75,7 @@ export class ScoreBar {
       window.stopMusic = !window.stopMusic;
       if (window.stopMusic) {
         stopMusic.texture =
-          window.loader.resources["../assets/imgs/icons/nomusic.svg"].texture;
+          window.loader.resources["./assets/imgs/icons/nomusic.svg"].texture;
         gameSceneBackgroundSound.stop();
       } else {
         stopMusic.texture = stopMusicTexture;
@@ -86,7 +86,7 @@ export class ScoreBar {
 
   private _createStopButton = (): void => {
     const stopButtonTexture: PIXI.Texture =
-      window.loader.resources["../assets/imgs/icons/play.svg"].texture;
+      window.loader.resources["./assets/imgs/icons/play.svg"].texture;
     this._stopButton = new window.PIXI.Sprite(stopButtonTexture);
     this._stopButton.width = 35;
     this._stopButton.height = 35;
@@ -99,7 +99,7 @@ export class ScoreBar {
   };
   private _createStopMusicButton = (): void => {
     const stopMusicTexture: PIXI.Texture =
-      window.loader.resources["../assets/imgs/icons/music.svg"].texture;
+      window.loader.resources["./assets/imgs/icons/music.svg"].texture;
     this._stopMusic = new window.PIXI.Sprite(stopMusicTexture);
     this._stopMusic.width = 35;
     this._stopMusic.height = 35;

@@ -36,15 +36,15 @@ class Game {
 
   private setup(): void {
     window.loader
-      .add("../assets/imgs/grass.png")
-      .add("../assets/imgs/moles.png")
-      .add("../assets/imgs/moles_dead.png")
-      .add("../assets/imgs/icons/clock.svg")
-      .add("../assets/imgs/icons/pause.svg")
-      .add("../assets/imgs/icons/play.svg")
-      .add("../assets/imgs/icons/music.svg")
-      .add("../assets/imgs/icons/nomusic.svg")
-      .add("../assets/imgs/icons/score.svg")
+      .add("./assets/imgs/grass.png")
+      .add("./assets/imgs/moles.png")
+      .add("./assets/imgs/moles_dead.png")
+      .add("./assets/imgs/icons/clock.svg")
+      .add("./assets/imgs/icons/pause.svg")
+      .add("./assets/imgs/icons/play.svg")
+      .add("./assets/imgs/icons/music.svg")
+      .add("./assets/imgs/icons/nomusic.svg")
+      .add("./assets/imgs/icons/score.svg")
       .load((): void => {
         this._startScene = new StartScene({
           app: this._app,
@@ -96,11 +96,11 @@ class Game {
 
     this._stopButton = this._gameScene.stopButton;
     this._stopButton.texture =
-      window.loader.resources["../assets/imgs/icons/play.svg"].texture;
+      window.loader.resources["./assets/imgs/icons/play.svg"].texture;
 
     this._stopMusic = this._gameScene.stopMusic;
     this._stopMusic.texture =
-      window.loader.resources["../assets/imgs/icons/music.svg"].texture;
+      window.loader.resources["./assets/imgs/icons/music.svg"].texture;
 
     gameSceneBackgroundSound.play();
   };

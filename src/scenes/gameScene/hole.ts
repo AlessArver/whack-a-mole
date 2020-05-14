@@ -17,7 +17,7 @@ export class Hole {
   }
 
   private _createHole() {
-    this._texture = window.loader.resources["../assets/imgs/grass.png"].texture;
+    this._texture = window.loader.resources["./assets/imgs/grass.png"].texture;
     this._grass = new window.PIXI.Sprite(this._texture);
     this._grass.position.set(this._x, this._y);
   }
